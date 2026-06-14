@@ -248,7 +248,7 @@ select.f-input-dark option { background: var(--bg2); color: var(--text); font-we
 .set-select { background: var(--bg2); border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; outline: none; font-family: 'Outfit', sans-serif; cursor: pointer; }
 
 /* CHART & FILTERS BAR */
-.chart-wrap { margin-bottom: 24px; margin-left: -8px; }
+.chart-wrap { margin-bottom: 24px; }
 .chart-legend { display: flex; gap: 16px; margin-bottom: 16px; justify-content: center; }
 .leg-item { display: flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 700; color: var(--text3); text-transform: uppercase; }
 .leg-dot { width: 10px; height: 10px; border-radius: 2px; }
@@ -300,8 +300,7 @@ select.f-input-dark option { background: var(--bg2); color: var(--text); font-we
   .panel { display: flex; flex-direction: column; gap: 16px; background: transparent; }
   .card { padding: 16px 0 !important; border-radius: 0 !important; border: none !important; background: transparent !important; margin-bottom: 0; }
   
-  .card-head, .form-row, .filter-bar, .period-bar { padding-left: 16px !important; padding-right: 16px !important; }
-  .chart-wrap { padding-left: 2px !important; padding-right: 16px !important; }
+  .card-head, .form-row, .filter-bar, .chart-wrap, .period-bar { padding-left: 16px !important; padding-right: 16px !important; }
   
   .filter-bar { flex-direction: column; } 
   .export-btn { width: 100%; text-align: center; border-radius: 16px; padding: 18px 16px; }
@@ -440,6 +439,12 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
   100% { transform: translateY(0); opacity: 1; letter-spacing: 3px; } 
 }
 @keyframes fadeSub { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
+
+/* ==========================================================================
+   FACE ID / BIOMETRIC SECURITY
+   ========================================================================== */
+.face-btn { background: var(--bg3); color: var(--text); border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 12px; }
+.face-btn:hover { background: var(--bg2); border-color: var(--gold2); }
 </style>
 </head>
 <body>
@@ -498,6 +503,7 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
     <div class="form-row">
        <input type="password" id="app-pin" class="f-input-dark" style="text-align:center; letter-spacing: 12px; font-size: 24px; padding: 12px;" inputmode="numeric" maxlength="6" placeholder="••••••">
     </div>
+    <button class="auth-btn face-btn" id="face-login-btn" onclick="verifyFaceID()" style="display:none;">👤 BUKA DENGAN FACE ID</button>
     <button class="auth-btn" id="pin-submit-btn" onclick="verifyPin()" style="display:none;">BUKA APLIKASI</button>
     <button style="background:transparent; border:none; color:var(--text3); font-size:10px; margin-top:24px; cursor:pointer; font-weight:700; text-transform:uppercase; text-decoration:underline;" onclick="resetAccount()">Ganti Akun / Reset PIN</button>
   </div>
@@ -712,6 +718,13 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
       </div>
       <button class="set-action" onclick="changePinInApp()">GANTI PIN</button>
     </div>
+    <div class="set-item">
+      <div>
+        <div class="set-label">Keamanan Muka (Face ID)</div>
+        <div class="set-sub">Gunakan sensor wajah/biometrik perangkat</div>
+      </div>
+      <button class="set-action" style="color:var(--gold); border-color:var(--gold);" onclick="registerFaceID()">DAFTAR FACE ID</button>
+    </div>
   </div>
 
   <div class="set-group">
@@ -878,6 +891,12 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
      document.getElementById('pin-sub').textContent = 'Keamanan aktif';
      document.getElementById('pin-submit-btn').textContent = 'BUKA APLIKASI';
      window.pinMode = 'verify';
+     if (localStorage.getItem('face_id_enabled_' + lastUid) === 'true') {
+         setTimeout(() => {
+             const faceBtn = document.getElementById('face-login-btn');
+             if(faceBtn) faceBtn.style.display = 'flex';
+         }, 100);
+     }
   }
 </script>
 
@@ -975,9 +994,11 @@ window.clearLocalCache = function() {
     Swal.fire({ title: 'Bersihkan Cache?', text: "Data inti di cloud aman, hanya mereset preferensi hp ini.", icon: 'warning', showCancelButton: true, confirmButtonColor: 'var(--red2)', background: 'var(--card)', color: 'var(--text)' }).then((res) => {
         if(res.isConfirmed) {
             let tempLastUid = localStorage.getItem('last_uid_rhn'); let tempPin = localStorage.getItem('app_pin_' + tempLastUid);
+            let tempFace = localStorage.getItem('face_id_enabled_' + tempLastUid);
             localStorage.clear();
             if(tempLastUid) localStorage.setItem('last_uid_rhn', tempLastUid);
             if(tempPin) localStorage.setItem('app_pin_' + tempLastUid, tempPin);
+            if(tempFace) localStorage.setItem('face_id_enabled_' + tempLastUid, tempFace);
             Swal.fire({position: 'center', icon: 'success', title: 'Bersih!', showConfirmButton: false, timer: 1500, background: 'var(--card)', color: 'var(--text)'}); setTimeout(()=>location.reload(), 1500);
         }
     });
@@ -1117,6 +1138,7 @@ onAuthStateChanged(auth, user => {
       document.getElementById('pin-sub').textContent = 'Buat 6 digit PIN untuk akses cepat';
       document.getElementById('pin-submit-btn').textContent = 'SIMPAN PIN';
       window.pinMode = 'setup';
+      document.getElementById('face-login-btn').style.display = 'none';
     } else {
       document.getElementById('app-screen').style.display = 'none';
       document.getElementById('pin-screen').style.display = 'flex';
@@ -1125,6 +1147,12 @@ onAuthStateChanged(auth, user => {
       document.getElementById('pin-submit-btn').textContent = 'BUKA APLIKASI';
       window.pinMode = 'verify';
       
+      if (localStorage.getItem('face_id_enabled_' + user.uid) === 'true') {
+          document.getElementById('face-login-btn').style.display = 'flex';
+      } else {
+          document.getElementById('face-login-btn').style.display = 'none';
+      }
+
       if (window.pendingUnlock) {
           window.pendingUnlock = false;
           unlockApp();
@@ -1144,6 +1172,50 @@ onAuthStateChanged(auth, user => {
     txs = [];
   }
 });
+
+window.registerFaceID = async function() {
+    if (!currentUser) return;
+    if (!window.PublicKeyCredential) {
+        return Swal.fire({icon: 'error', title: 'Tidak Didukung', text: 'Perangkat atau browser kamu tidak mendukung WebAuthn/Face ID.', background: 'var(--card)', color: 'var(--text)'});
+    }
+
+    try {
+        const publicKey = {
+            challenge: new Uint8Array(32),
+            rp: { name: "RHN Capital" },
+            user: { id: new Uint8Array(16), name: currentUser.email, displayName: currentUser.email },
+            pubKeyCredParams: [{type: "public-key", alg: -7}, {type: "public-key", alg: -257}],
+            authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
+            timeout: 60000
+        };
+        const credential = await navigator.credentials.create({ publicKey });
+        if (credential) {
+            localStorage.setItem('face_id_enabled_' + currentUser.uid, 'true');
+            Swal.fire({icon: 'success', title: 'Face ID Aktif!', text: 'Kamu bisa login pakai biometrik wajah sekarang.', background: 'var(--card)', color: 'var(--text)'});
+        }
+    } catch (err) {
+        Swal.fire({icon: 'error', title: 'Gagal', text: 'Pendaftaran Face ID gagal atau dibatalkan. Pastikan kamu sudah punya Face ID / Screen Lock aktif di perangkat.', background: 'var(--card)', color: 'var(--text)'});
+    }
+};
+
+window.verifyFaceID = async function() {
+    if (!window.PublicKeyCredential) return;
+    try {
+        const publicKey = { challenge: new Uint8Array(32), timeout: 60000, userVerification: "required" };
+        const assertion = await navigator.credentials.get({ publicKey });
+        if (assertion) {
+            if (currentUser) {
+                unlockApp();
+            } else {
+                document.getElementById('pin-title').textContent = 'Memuat Data...';
+                document.getElementById('pin-sub').textContent = 'Tunggu sebentar...';
+                window.pendingUnlock = true;
+            }
+        }
+    } catch (err) {
+        Swal.fire({icon: 'error', title: 'Akses Ditolak', text: 'Wajah tidak dikenali atau verifikasi dibatalkan.', background: 'var(--card)', color: 'var(--text)'});
+    }
+};
 
 window.verifyPin = function() {
   const pinInput = document.getElementById('app-pin').value;
@@ -1556,7 +1628,7 @@ function renderWalletBalances() {
   container.innerHTML = html;
 }
 
-function mkChart(id,labels,incData,expData){ if(charts[id]) charts[id].destroy(); const c=document.getElementById(id); if(!c)return; const isLight = document.body.classList.contains('light-mode'); charts[id]=new Chart(c,{type:'bar',data:{labels,datasets:[{label:'Pemasukan',data:incData,backgroundColor:isLight?'#10B981':'#10B981',borderRadius:4,barPercentage:0.6},{label:'Pengeluaran',data:expData,backgroundColor:isLight?'#F87171':'#F87171',borderRadius:4,barPercentage:0.6}]},options:{layout:{padding:{left:-5}},responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:isLight?'#888':'#888',font:{size:8,family:"'Outfit'",style:'normal'},autoSkip:false,maxRotation:0,minRotation:0},grid:{display:false},border:{display:false}},y:{ticks:{padding:0,color:isLight?'#888':'#888',font:{size:10,family:"'Outfit'",style:'normal'},callback:v=>Intl.NumberFormat('id-ID',{notation:'compact'}).format(v)},grid:{color:isLight?'#DEE2E6':'#222228',drawBorder:false},border:{display:false}}}}}); }
+function mkChart(id,labels,incData,expData){ if(charts[id]) charts[id].destroy(); const c=document.getElementById(id); if(!c)return; const isLight = document.body.classList.contains('light-mode'); charts[id]=new Chart(c,{type:'bar',data:{labels,datasets:[{label:'Pemasukan',data:incData,backgroundColor:isLight?'#10B981':'#10B981',borderRadius:4,barPercentage:0.6},{label:'Pengeluaran',data:expData,backgroundColor:isLight?'#F87171':'#F87171',borderRadius:4,barPercentage:0.6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:isLight?'#888':'#888',font:{size:8,family:"'Outfit'",style:'normal'},autoSkip:true,maxTicksLimit:15,maxRotation:0,minRotation:0},grid:{display:false},border:{display:false}},y:{ticks:{color:isLight?'#888':'#888',font:{size:10,family:"'Outfit'",style:'normal'},callback:v=>Intl.NumberFormat('id-ID',{notation:'compact'}).format(v)},grid:{color:isLight?'#DEE2E6':'#222228',drawBorder:false},border:{display:false}}}}}); }
 
 window.renderDaily=function(){ const pick=document.getElementById('pick-daily').value, target=pick?new Date(pick).toDateString():new Date().toDateString(), arr=txs.filter(t=>new Date(t.date).toDateString()===target).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('daily-sum'),arr); renderList(document.getElementById('daily-body'), arr); };
 function wkKey(d){
