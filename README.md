@@ -503,7 +503,7 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
     <div class="form-row">
        <input type="password" id="app-pin" class="f-input-dark" style="text-align:center; letter-spacing: 12px; font-size: 24px; padding: 12px;" inputmode="numeric" maxlength="6" placeholder="••••••">
     </div>
-    <button class="auth-btn face-btn" id="face-login-btn" onclick="verifyFaceID()" style="display:none;">👤 BUKA DENGAN FACE ID</button>
+    <button class="auth-btn face-btn" id="face-login-btn" onclick="verifyBiometric()" style="display:none;">👤 BUKA DENGAN BIOMETRIK</button>
     <button class="auth-btn" id="pin-submit-btn" onclick="verifyPin()" style="display:none;">BUKA APLIKASI</button>
     <button style="background:transparent; border:none; color:var(--text3); font-size:10px; margin-top:24px; cursor:pointer; font-weight:700; text-transform:uppercase; text-decoration:underline;" onclick="resetAccount()">Ganti Akun / Reset PIN</button>
   </div>
@@ -720,10 +720,10 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
     </div>
     <div class="set-item">
       <div>
-        <div class="set-label">Keamanan Muka (Face ID)</div>
-        <div class="set-sub">Gunakan sensor wajah/biometrik perangkat</div>
+        <div class="set-label">Biometrik (Face ID / Sidik Jari)</div>
+        <div class="set-sub">Gunakan sensor wajah atau sidik jari HP</div>
       </div>
-      <button class="set-action" style="color:var(--gold); border-color:var(--gold);" onclick="registerFaceID()">DAFTAR FACE ID</button>
+      <button class="set-action" style="color:var(--gold); border-color:var(--gold);" onclick="registerBiometric()">DAFTAR BIOMETRIK</button>
     </div>
   </div>
 
@@ -891,7 +891,7 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
      document.getElementById('pin-sub').textContent = 'Keamanan aktif';
      document.getElementById('pin-submit-btn').textContent = 'BUKA APLIKASI';
      window.pinMode = 'verify';
-     if (localStorage.getItem('face_id_enabled_' + lastUid) === 'true') {
+     if (localStorage.getItem('biometric_enabled_' + lastUid) === 'true') {
          setTimeout(() => {
              const faceBtn = document.getElementById('face-login-btn');
              if(faceBtn) faceBtn.style.display = 'flex';
@@ -994,11 +994,11 @@ window.clearLocalCache = function() {
     Swal.fire({ title: 'Bersihkan Cache?', text: "Data inti di cloud aman, hanya mereset preferensi hp ini.", icon: 'warning', showCancelButton: true, confirmButtonColor: 'var(--red2)', background: 'var(--card)', color: 'var(--text)' }).then((res) => {
         if(res.isConfirmed) {
             let tempLastUid = localStorage.getItem('last_uid_rhn'); let tempPin = localStorage.getItem('app_pin_' + tempLastUid);
-            let tempFace = localStorage.getItem('face_id_enabled_' + tempLastUid);
+            let tempBio = localStorage.getItem('biometric_enabled_' + tempLastUid);
             localStorage.clear();
             if(tempLastUid) localStorage.setItem('last_uid_rhn', tempLastUid);
             if(tempPin) localStorage.setItem('app_pin_' + tempLastUid, tempPin);
-            if(tempFace) localStorage.setItem('face_id_enabled_' + tempLastUid, tempFace);
+            if(tempBio) localStorage.setItem('biometric_enabled_' + tempLastUid, tempBio);
             Swal.fire({position: 'center', icon: 'success', title: 'Bersih!', showConfirmButton: false, timer: 1500, background: 'var(--card)', color: 'var(--text)'}); setTimeout(()=>location.reload(), 1500);
         }
     });
@@ -1147,7 +1147,7 @@ onAuthStateChanged(auth, user => {
       document.getElementById('pin-submit-btn').textContent = 'BUKA APLIKASI';
       window.pinMode = 'verify';
       
-      if (localStorage.getItem('face_id_enabled_' + user.uid) === 'true') {
+      if (localStorage.getItem('biometric_enabled_' + user.uid) === 'true') {
           document.getElementById('face-login-btn').style.display = 'flex';
       } else {
           document.getElementById('face-login-btn').style.display = 'none';
@@ -1173,10 +1173,10 @@ onAuthStateChanged(auth, user => {
   }
 });
 
-window.registerFaceID = async function() {
+window.registerBiometric = async function() {
     if (!currentUser) return;
     if (!window.PublicKeyCredential) {
-        return Swal.fire({icon: 'error', title: 'Tidak Didukung', text: 'Perangkat atau browser kamu tidak mendukung WebAuthn/Face ID.', background: 'var(--card)', color: 'var(--text)'});
+        return Swal.fire({icon: 'error', title: 'Tidak Didukung', text: 'Perangkat atau browser kamu tidak mendukung sistem Biometrik (WebAuthn).', background: 'var(--card)', color: 'var(--text)'});
     }
 
     try {
@@ -1190,15 +1190,15 @@ window.registerFaceID = async function() {
         };
         const credential = await navigator.credentials.create({ publicKey });
         if (credential) {
-            localStorage.setItem('face_id_enabled_' + currentUser.uid, 'true');
-            Swal.fire({icon: 'success', title: 'Face ID Aktif!', text: 'Kamu bisa login pakai biometrik wajah sekarang.', background: 'var(--card)', color: 'var(--text)'});
+            localStorage.setItem('biometric_enabled_' + currentUser.uid, 'true');
+            Swal.fire({icon: 'success', title: 'Biometrik Aktif!', text: 'Kamu bisa login pakai Face ID atau Sidik Jari sekarang.', background: 'var(--card)', color: 'var(--text)'});
         }
     } catch (err) {
-        Swal.fire({icon: 'error', title: 'Gagal', text: 'Pendaftaran Face ID gagal atau dibatalkan. Pastikan kamu sudah punya Face ID / Screen Lock aktif di perangkat.', background: 'var(--card)', color: 'var(--text)'});
+        Swal.fire({icon: 'error', title: 'Gagal', text: 'Pendaftaran gagal atau dibatalkan. Pastikan Face ID / Fingerprint / PIN Layar di perangkat kamu sudah aktif.', background: 'var(--card)', color: 'var(--text)'});
     }
 };
 
-window.verifyFaceID = async function() {
+window.verifyBiometric = async function() {
     if (!window.PublicKeyCredential) return;
     try {
         const publicKey = { challenge: new Uint8Array(32), timeout: 60000, userVerification: "required" };
@@ -1213,7 +1213,7 @@ window.verifyFaceID = async function() {
             }
         }
     } catch (err) {
-        Swal.fire({icon: 'error', title: 'Akses Ditolak', text: 'Wajah tidak dikenali atau verifikasi dibatalkan.', background: 'var(--card)', color: 'var(--text)'});
+        Swal.fire({icon: 'error', title: 'Akses Ditolak', text: 'Wajah/Sidik Jari tidak dikenali atau verifikasi dibatalkan.', background: 'var(--card)', color: 'var(--text)'});
     }
 };
 
