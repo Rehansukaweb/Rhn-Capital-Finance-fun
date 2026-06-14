@@ -1181,19 +1181,31 @@ window.registerBiometric = async function() {
 
     try {
         const publicKey = {
-            challenge: new Uint8Array(32),
+            challenge: window.crypto.getRandomValues(new Uint8Array(32)),
             rp: { name: "RHN Capital" },
-            user: { id: new Uint8Array(16), name: currentUser.email, displayName: currentUser.email },
+            user: { 
+                id: window.crypto.getRandomValues(new Uint8Array(16)), 
+                name: currentUser.email, 
+                displayName: currentUser.email 
+            },
             pubKeyCredParams: [{type: "public-key", alg: -7}, {type: "public-key", alg: -257}],
-            authenticatorSelection: { authenticatorAttachment: "platform", userVerification: "required" },
+            authenticatorSelection: { 
+                authenticatorAttachment: "platform", 
+                userVerification: "required",
+                residentKey: "required",
+                requireResidentKey: true 
+            },
             timeout: 60000
         };
         const credential = await navigator.credentials.create({ publicKey });
         if (credential) {
+            const credIdArray = Array.from(new Uint8Array(credential.rawId));
+            localStorage.setItem('bio_cred_id_' + currentUser.uid, JSON.stringify(credIdArray));
             localStorage.setItem('biometric_enabled_' + currentUser.uid, 'true');
             Swal.fire({icon: 'success', title: 'Biometrik Aktif!', text: 'Kamu bisa login pakai Face ID atau Sidik Jari sekarang.', background: 'var(--card)', color: 'var(--text)'});
         }
     } catch (err) {
+        console.error("Biometric Error: ", err);
         Swal.fire({icon: 'error', title: 'Gagal', text: 'Pendaftaran gagal atau dibatalkan. Pastikan Face ID / Fingerprint / PIN Layar di perangkat kamu sudah aktif.', background: 'var(--card)', color: 'var(--text)'});
     }
 };
@@ -1201,7 +1213,24 @@ window.registerBiometric = async function() {
 window.verifyBiometric = async function() {
     if (!window.PublicKeyCredential) return;
     try {
-        const publicKey = { challenge: new Uint8Array(32), timeout: 60000, userVerification: "required" };
+        const uid = currentUser ? currentUser.uid : localStorage.getItem('last_uid_rhn');
+        const savedCredString = localStorage.getItem('bio_cred_id_' + uid);
+
+        const publicKey = { 
+            challenge: window.crypto.getRandomValues(new Uint8Array(32)), 
+            timeout: 60000, 
+            userVerification: "required" 
+        };
+
+        if (savedCredString) {
+            const credBytes = new Uint8Array(JSON.parse(savedCredString));
+            publicKey.allowCredentials = [{
+                id: credBytes,
+                type: 'public-key',
+                transports: ['internal']
+            }];
+        }
+
         const assertion = await navigator.credentials.get({ publicKey });
         if (assertion) {
             if (currentUser) {
@@ -1213,6 +1242,7 @@ window.verifyBiometric = async function() {
             }
         }
     } catch (err) {
+        console.error("Biometric Verify Error: ", err);
         Swal.fire({icon: 'error', title: 'Akses Ditolak', text: 'Wajah/Sidik Jari tidak dikenali atau verifikasi dibatalkan.', background: 'var(--card)', color: 'var(--text)'});
     }
 };
