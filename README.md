@@ -65,6 +65,9 @@ body {
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
+/* FIX POP-UP MUNCUL DI BELAKANG LAYAR PIN */
+.swal2-container { z-index: 100000 !important; }
+
 /* TOP TEXT & EXTERNAL LINKS */
 .top-title {
   color: var(--blue-title); font-size: 22px; font-weight: 800;
@@ -352,117 +355,93 @@ select.f-input-dark option { background: var(--bg2); color: var(--text); font-we
 body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, body.hide-usd .usd-status-pill { display: none !important; }
 
 /* ==========================================================================
-   SPLASH SCREEN V4: 100X EPIC CINEMATIC MASTERPIECE
+   SPLASH SCREEN V3: ULTIMATE MASTERPIECE (RHN CAPITAL)
    ========================================================================== */
 #splash-screen {
   position: fixed; inset: 0; 
-  background: #050505;
+  background: radial-gradient(circle at center, #121215 0%, #050505 100%);
   z-index: 999999; display: flex; align-items: center; justify-content: center; overflow: hidden;
-  perspective: 1000px; 
 }
 
-#splash-screen::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(circle at center, rgba(245, 158, 11, 0.15) 0%, transparent 60%);
-  opacity: 0; animation: coreGlow 3s ease-in-out forwards;
-}
-
-/* Transisi keluar Cinematic Snap-Zoom */
+/* Transisi keluar Dive-in */
 #splash-screen.splash-exit {
-  animation: cinematicExit 0.9s cubic-bezier(0.19, 1, 0.22, 1) forwards;
-  will-change: transform, opacity, filter;
+  animation: diveIn 0.8s cubic-bezier(0.7, 0, 0.3, 1) forwards;
 }
 
-@keyframes cinematicExit {
-  0% { transform: scale(1); opacity: 1; filter: blur(0) brightness(1); }
-  40% { transform: scale(0.95); opacity: 1; filter: blur(0) brightness(1.5); }
-  100% { transform: scale(3); opacity: 0; filter: blur(15px) brightness(0); visibility: hidden; }
+@keyframes diveIn {
+  0% { transform: scale(1); opacity: 1; filter: blur(0); }
+  100% { transform: scale(1.5); opacity: 0; filter: blur(10px); visibility: hidden; }
 }
 
-/* Partikel Bintang/Emas - Burst Effect */
-.splash-particles { position: absolute; inset: 0; z-index: 1; pointer-events: none; display: flex; justify-content: center; align-items: center; }
+/* Partikel Bintang/Emas */
+.splash-particles { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
 .particle {
   position: absolute; background: var(--gold); border-radius: 50%;
-  box-shadow: 0 0 15px var(--gold), 0 0 30px var(--gold2); opacity: 0; 
+  box-shadow: 0 0 10px var(--gold); opacity: 0; 
+  animation: floatParticle 3s infinite ease-in-out;
 }
 
-/* Box Logo & Epic Rings */
+@keyframes floatParticle {
+  0% { transform: translateY(0) scale(0); opacity: 0; }
+  50% { opacity: 0.6; }
+  100% { transform: translateY(-50px) scale(1.5); opacity: 0; }
+}
+
+.splash-content { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; }
+
+/* Box Logo & Cincin Putar */
 .splash-logo-box { 
-  position: relative; width: 120px; height: 120px; margin-bottom: 25px; 
-  display: flex; align-items: center; justify-content: center; z-index: 2;
+  position: relative; width: 110px; height: 110px; margin-bottom: 20px; 
+  display: flex; align-items: center; justify-content: center; 
 }
 
-.splash-ring-outer {
-  position: absolute; inset: -15px; 
-  border-radius: 50%;
-  border: 2px solid transparent;
-  border-top-color: var(--gold);
-  border-bottom-color: var(--gold2);
-  opacity: 0;
-  animation: spinOuter 4s cubic-bezier(0.4, 0, 0.2, 1) infinite, fadeInRing 1s forwards 0.3s;
-}
-.splash-ring-inner {
+.splash-ring {
   position: absolute; inset: -5px; 
-  border-radius: 50%;
-  border: 1px dashed rgba(245, 158, 11, 0.6);
-  opacity: 0;
-  animation: spinInner 6s linear infinite reverse, fadeInRing 1s forwards 0.5s;
+  border: 2px dashed rgba(245, 158, 11, 0.5); border-radius: 24px;
+  animation: spinRing 10s linear infinite, popIn 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
 .splash-img {
-  width: 90px; height: 90px; border-radius: 20px; 
-  border: 2px solid rgba(251, 191, 36, 0.8); padding: 2px;
-  box-shadow: 0 0 40px rgba(245, 158, 11, 0.4), inset 0 0 20px rgba(245, 158, 11, 0.2); 
-  opacity: 0; transform: scale(0.3) rotateX(45deg);
-  animation: logoEpicReveal 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.2s;
+  width: 90px; height: 90px; border-radius: 18px; border: 2px solid var(--gold); padding: 3px;
+  box-shadow: 0 0 35px rgba(245, 158, 11, 0.5); opacity: 0;
+  animation: logoZoomFade 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.2s;
 }
 
-/* Kilauan Kaca di Logo (Super Shine) */
+/* Kilauan Kaca di Logo */
 .splash-img-shine {
-  position: absolute; width: 90px; height: 90px; border-radius: 20px; overflow: hidden; pointer-events: none; z-index: 3;
+  position: absolute; width: 90px; height: 90px; border-radius: 18px; overflow: hidden; pointer-events: none;
 }
 .splash-img-shine::after {
-  content: ""; position: absolute; top: -100%; left: -100%; width: 50px; height: 300%;
-  background: linear-gradient(to right, transparent, rgba(255,255,255,0.8), transparent);
-  transform: rotate(45deg);
-  animation: superShine 3s infinite cubic-bezier(0.4, 0, 0.2, 1) 1s;
+  content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+  background: linear-gradient(to right, transparent, rgba(255,255,255,0.6), transparent);
+  transform: rotate(45deg) translateX(-100%);
+  animation: flashShine 2.5s infinite cubic-bezier(0.4, 0, 0.2, 1) 1s;
 }
 
-/* Masking Reveal Text 3D */
-.splash-title-wrap { position: relative; overflow: hidden; padding: 10px; z-index: 2; perspective: 500px; }
+/* Masking Reveal Text */
+.splash-title-wrap { overflow: hidden; padding-bottom: 5px; }
 .splash-title {
-  font-family: 'Outfit', sans-serif; font-size: 32px; font-weight: 800;
-  background: linear-gradient(135deg, #FFF 0%, var(--gold) 50%, var(--gold2) 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  text-shadow: 0 10px 30px rgba(245, 158, 11, 0.4); 
-  transform: translateY(100px) rotateX(-45deg) scale(0.8); opacity: 0; filter: blur(10px);
-  animation: title3DReveal 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.7s;
+  color: var(--text); font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 800;
+  text-shadow: 0 4px 20px rgba(245, 158, 11, 0.6); 
+  transform: translateY(100%); opacity: 0;
+  animation: revealText 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 0.6s;
 }
 
 .splash-sub {
-  color: var(--text2); font-size: 12px; font-weight: 700; letter-spacing: 8px; margin-top: 5px; 
-  opacity: 0; transform: translateY(-10px); z-index: 2;
-  text-shadow: 0 0 10px rgba(255,255,255,0.2);
-  animation: subReveal 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards 1.2s;
+  color: var(--gold); font-size: 11px; font-weight: 700; letter-spacing: 4px; margin-top: 4px; opacity: 0;
+  animation: fadeSub 1s ease forwards 1.2s;
 }
 
-/* KEYFRAMES ULTIMATE V4 */
-@keyframes coreGlow { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1.2); } }
-@keyframes spinOuter { 0% { transform: rotate(0deg) scale(1); border-top-color: var(--gold); border-bottom-color: var(--gold2); } 50% { transform: rotate(180deg) scale(1.1); border-top-color: var(--gold2); border-bottom-color: var(--gold); } 100% { transform: rotate(360deg) scale(1); border-top-color: var(--gold); border-bottom-color: var(--gold2); } }
-@keyframes spinInner { 100% { transform: rotate(-360deg); } }
-@keyframes fadeInRing { 100% { opacity: 1; } }
-@keyframes logoEpicReveal { 0% { transform: scale(0.2) rotateX(60deg); opacity: 0; filter: blur(10px); } 100% { transform: scale(1) rotateX(0deg); opacity: 1; filter: blur(0); } }
-@keyframes superShine { 0% { transform: rotate(45deg) translate(-150%, -50%); } 100% { transform: rotate(45deg) translate(300%, 50%); } }
-@keyframes title3DReveal { 
-  0% { transform: translateY(80px) rotateX(-60deg) scale(0.8); opacity: 0; filter: blur(10px); letter-spacing: 15px; } 
-  100% { transform: translateY(0) rotateX(0deg) scale(1); opacity: 1; filter: blur(0); letter-spacing: 2px; } 
+/* KEYFRAMES ULTIMATE */
+@keyframes spinRing { 100% { transform: rotate(360deg); } }
+@keyframes popIn { 0% { transform: scale(0); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+@keyframes logoZoomFade { 0% { transform: scale(0.5); opacity: 0; filter: blur(5px); } 100% { transform: scale(1); opacity: 1; filter: blur(0); } }
+@keyframes flashShine { 0% { transform: rotate(45deg) translateX(-100%); } 100% { transform: rotate(45deg) translateX(100%); } }
+@keyframes revealText { 
+  0% { transform: translateY(100%); opacity: 0; letter-spacing: 12px; } 
+  100% { transform: translateY(0); opacity: 1; letter-spacing: 3px; } 
 }
-@keyframes subReveal { 0% { opacity: 0; transform: translateY(-10px) scale(0.9); letter-spacing: 15px; } 100% { opacity: 1; transform: translateY(0) scale(1); letter-spacing: 6px; } }
-@keyframes particleBurst {
-  0% { transform: translate(0, 0) scale(0); opacity: 0; }
-  20% { opacity: 1; transform: translate(calc(var(--tx) * 0.2), calc(var(--ty) * 0.2)) scale(1.5); }
-  100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
-}
+@keyframes fadeSub { 0% { opacity: 0; transform: translateY(10px); } 100% { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
@@ -471,8 +450,7 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
   <div class="splash-particles" id="splash-particles"></div>
   <div class="splash-content">
     <div class="splash-logo-box">
-      <div class="splash-ring-outer"></div>
-      <div class="splash-ring-inner"></div>
+      <div class="splash-ring"></div>
       <img src="RHN LOGO.jpg" alt="RHN Capital Logo" class="splash-img">
       <div class="splash-img-shine"></div>
     </div>
@@ -520,10 +498,14 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
     <div class="auth-sub" id="pin-sub">Masukkan 6 digit PIN keamanan</div>
     <div id="pin-err" style="color:var(--red2);font-size:12px;margin-bottom:12px;display:none;"></div>
     <div class="form-row">
-       <input type="tel" pattern="[0-9]*" id="app-pin" class="f-input-dark" style="text-align:center; letter-spacing: 12px; font-size: 24px; padding: 12px;" inputmode="numeric" maxlength="6" placeholder="••••••">
+       <input type="password" id="app-pin" class="f-input-dark" style="text-align:center; letter-spacing: 12px; font-size: 24px; padding: 12px;" inputmode="numeric" maxlength="6" placeholder="••••••">
     </div>
     <button class="auth-btn" id="pin-submit-btn" onclick="verifyPin()" style="display:none;">BUKA APLIKASI</button>
-    <button style="background:transparent; border:none; color:var(--text3); font-size:10px; margin-top:24px; cursor:pointer; font-weight:700; text-transform:uppercase; text-decoration:underline;" onclick="resetAccount()">Ganti Akun / Reset PIN</button>
+    
+    <div style="display: flex; justify-content: space-between; gap: 16px; margin-top: 24px;">
+      <button style="background:transparent; border:none; color:var(--text3); font-size:10px; cursor:pointer; font-weight:700; text-transform:uppercase; text-decoration:underline;" onclick="resetAccount()">Ganti Akun</button>
+      <button style="background:transparent; border:none; color:var(--text3); font-size:10px; cursor:pointer; font-weight:700; text-transform:uppercase; text-decoration:underline;" onclick="resetPinFromLogin()">Reset PIN</button>
+    </div>
   </div>
 </div>
 
@@ -592,7 +574,7 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
         <button class="t-btn recv" id="btn-recv" onclick="selType('recv')" style="flex-basis: 48%;">💸 Piutang</button>
       </div>
       
-      <div class="form-row"><label class="form-label">JUMLAH (RP)</label><input type="tel" pattern="[0-9]*" inputmode="numeric" id="f-amount" class="f-input-dark" placeholder="0"></div>
+      <div class="form-row"><label class="form-label">JUMLAH (RP)</label><input type="text" inputmode="numeric" id="f-amount" class="f-input-dark" placeholder="0"></div>
       
       <div class="form-row" id="row-cat"><label class="form-label">KATEGORI</label><select id="f-cat" class="f-input-dark"></select></div>
       <div class="form-row">
@@ -894,13 +876,12 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
 
 <script>
   const lastUid = localStorage.getItem('last_uid_rhn');
-  const savedPin = lastUid ? localStorage.getItem('app_pin_' + lastUid) : null;
-  if (savedPin) {
+  if (lastUid) {
      document.getElementById('auth-screen').style.display = 'none';
      document.getElementById('pin-screen').style.display = 'flex';
-     document.getElementById('pin-title').textContent = 'Masukkan PIN';
-     document.getElementById('pin-sub').textContent = 'Keamanan aktif';
-     document.getElementById('pin-submit-btn').textContent = 'BUKA APLIKASI';
+     document.getElementById('pin-title').textContent = 'Memuat Keamanan...';
+     document.getElementById('pin-sub').textContent = 'Sinkronisasi dengan server';
+     document.getElementById('app-pin').style.display = 'none';
      window.pinMode = 'verify';
   }
 </script>
@@ -917,7 +898,7 @@ if(localStorage.getItem('theme') === 'light') { document.body.classList.add('lig
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { initializeFirestore, persistentLocalCache, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { initializeFirestore, persistentLocalCache, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, serverTimestamp, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = { apiKey: "AIzaSyCx04v3ppq3DxbXDg0PrWBeJYIZjmJF9cg", authDomain: "rhn-capital.firebaseapp.com", projectId: "rhn-capital", storageBucket: "rhn-capital.firebasestorage.app", messagingSenderId: "74905216682", appId: "1:74905216682:web:4687a5b0bd7bcac09292d3" };
 const app = initializeApp(firebaseConfig); 
@@ -998,10 +979,9 @@ window.reqResetPasswordViaSettings = async function() {
 window.clearLocalCache = function() {
     Swal.fire({ title: 'Bersihkan Cache?', text: "Data inti di cloud aman, hanya mereset preferensi hp ini.", icon: 'warning', showCancelButton: true, confirmButtonColor: 'var(--red2)', background: 'var(--card)', color: 'var(--text)' }).then((res) => {
         if(res.isConfirmed) {
-            let tempLastUid = localStorage.getItem('last_uid_rhn'); let tempPin = localStorage.getItem('app_pin_' + tempLastUid);
+            let tempLastUid = localStorage.getItem('last_uid_rhn');
             localStorage.clear();
             if(tempLastUid) localStorage.setItem('last_uid_rhn', tempLastUid);
-            if(tempPin) localStorage.setItem('app_pin_' + tempLastUid, tempPin);
             Swal.fire({position: 'center', icon: 'success', title: 'Bersih!', showConfirmButton: false, timer: 1500, background: 'var(--card)', color: 'var(--text)'}); setTimeout(()=>location.reload(), 1500);
         }
     });
@@ -1009,14 +989,13 @@ window.clearLocalCache = function() {
 
 window.deleteAllData = async function() {
     if(!currentUser) return;
-    const savedPin = localStorage.getItem('app_pin_' + currentUser.uid);
     Swal.fire({
         title: 'Verifikasi PIN Keamanan', text: 'Masukkan 6 digit PIN untuk format total akun:', input: 'password',
         inputAttributes: { inputmode: 'numeric', maxlength: 6, autofocus: true, style: 'text-align: center; letter-spacing: 10px; font-size: 24px;' },
         icon: 'warning', showCancelButton: true, confirmButtonColor: 'var(--red2)', cancelButtonColor: 'var(--bg3)', confirmButtonText: 'HAPUS SEMUA', background: 'var(--card)', color: 'var(--text)'
     }).then(async (res) => {
         if(res.isConfirmed) {
-            if (res.value !== savedPin) return Swal.fire({icon: 'error', title: 'PIN Salah!', background:'var(--card)', color:'var(--text)'});
+            if (res.value !== window.userCloudPin) return Swal.fire({icon: 'error', title: 'PIN Salah!', background:'var(--card)', color:'var(--text)'});
             Swal.fire({title: 'Menghapus...', background:'var(--card)', color:'var(--text)', didOpen: () => {Swal.showLoading()}});
             try { for(let t of txs) await deleteDoc(doc(db,'users',currentUser.uid,'transactions',t.id)); Swal.fire({icon: 'success', title: 'Data Diformat!', background:'var(--card)', color:'var(--text)'}); } catch(e) { Swal.fire('Error', e.message, 'error'); }
         }
@@ -1073,28 +1052,58 @@ window.saveExtraPrefs = function() {
 
 window.changePinInApp = async function() {
     if(!currentUser) return;
-    const savedPin = localStorage.getItem('app_pin_' + currentUser.uid);
 
-    const { value: oldPin } = await Swal.fire({
-        title: 'Masukkan PIN Lama', input: 'password',
-        inputAttributes: { inputmode: 'numeric', maxlength: 6, style: 'text-align: center; letter-spacing: 10px; font-size: 24px;', autofocus: true },
-        background: 'var(--card)', color: 'var(--text)', confirmButtonColor: 'var(--border2)', confirmButtonText: 'LANJUT'
+    // LANGSUNG KELUAR OPSI, TANPA MINTA PIN LAMA DULUAN
+    const { value: choice } = await Swal.fire({
+        title: 'Pengaturan PIN',
+        text: 'Pilih aksi yang mau lu lakuin:',
+        icon: 'question',
+        showCancelButton: true,
+        showDenyButton: true,
+        confirmButtonText: 'Lupa PIN (Buat Baru)',
+        denyButtonText: 'Ingat PIN (Ganti PIN)',
+        cancelButtonText: 'Batal',
+        background: 'var(--card)', color: 'var(--text)',
+        confirmButtonColor: 'var(--red2)', denyButtonColor: 'var(--gold)', cancelButtonColor: 'var(--bg3)'
     });
 
-    if (!oldPin) return;
-    if (oldPin !== savedPin) return Swal.fire({icon:'error', title:'PIN Lama Salah!', background:'var(--card)', color:'var(--text)'});
+    const promptNewPin = async () => {
+        const { value: newPin } = await Swal.fire({
+            title: 'Buat PIN Baru',
+            text: 'Masukkan 6 angka PIN baru kamu',
+            input: 'password',
+            inputAttributes: { inputmode: 'numeric', maxlength: 6, style: 'text-align: center; letter-spacing: 10px; font-size: 24px;', autofocus: true },
+            background: 'var(--card)', color: 'var(--text)',
+            confirmButtonColor: 'var(--gold)', confirmButtonText: 'SIMPAN PIN BARU'
+        });
 
-    const { value: newPin } = await Swal.fire({
-        title: 'Buat PIN Baru', text: 'Masukkan 6 angka PIN baru kamu', input: 'password',
-        inputAttributes: { inputmode: 'numeric', maxlength: 6, style: 'text-align: center; letter-spacing: 10px; font-size: 24px;', autofocus: true },
-        background: 'var(--card)', color: 'var(--text)', confirmButtonColor: 'var(--gold)', confirmButtonText: 'SIMPAN PIN BARU'
-    });
+        if (newPin && newPin.length === 6) {
+            try {
+                await setDoc(doc(db, 'users', currentUser.uid, 'settings', 'security'), { pin: newPin }, { merge: true });
+                window.userCloudPin = newPin;
+                Swal.fire({icon:'success', title:'PIN Berhasil Disimpan!', background:'var(--card)', color:'var(--text)', timer: 1500, showConfirmButton: false});
+            } catch(e) {
+                Swal.fire({icon:'error', title:'Gagal mengubah PIN', text: e.message, background:'var(--card)', color:'var(--text)'});
+            }
+        } else if (newPin) {
+            Swal.fire({icon:'warning', title:'Gagal, harus 6 digit!', background:'var(--card)', color:'var(--text)'});
+        }
+    };
 
-    if (newPin && newPin.length === 6) {
-        localStorage.setItem('app_pin_' + currentUser.uid, newPin);
-        Swal.fire({icon:'success', title:'PIN Berhasil Diganti!', background:'var(--card)', color:'var(--text)', timer: 1500, showConfirmButton: false});
-    } else if (newPin) {
-        Swal.fire({icon:'warning', title:'Gagal, harus 6 digit!', background:'var(--card)', color:'var(--text)'});
+    if (choice === true) {
+        // LUPA PIN -> Bikin langsung PIN baru
+        promptNewPin();
+    } else if (choice === false) {
+        // INGAT PIN -> Minta PIN lama dulu
+        const { value: oldPin } = await Swal.fire({
+            title: 'Masukkan PIN Lama',
+            input: 'password',
+            inputAttributes: { inputmode: 'numeric', maxlength: 6, style: 'text-align: center; letter-spacing: 10px; font-size: 24px;', autofocus: true },
+            background: 'var(--card)', color: 'var(--text)', confirmButtonColor: 'var(--border2)'
+        });
+        if (!oldPin) return;
+        if (oldPin !== window.userCloudPin) return Swal.fire({icon:'error', title:'PIN Lama Salah!', background:'var(--card)', color:'var(--text)'});
+        promptNewPin();
     }
 };
 
@@ -1105,7 +1114,7 @@ window.doLogout=async function(){
   await signOut(auth); 
 };
 
-onAuthStateChanged(auth, user => {
+onAuthStateChanged(auth, async user => {
   if (user) {
     currentUser = user;
     localStorage.setItem('last_uid_rhn', user.uid);
@@ -1133,26 +1142,36 @@ onAuthStateChanged(auth, user => {
         if (window.selType && appPrefs && appPrefs.type) { selType(appPrefs.type); } else { selType('income'); }
     }, 200);
 
-    const savedPin = localStorage.getItem('app_pin_' + user.uid);
-    if (!savedPin) {
-      document.getElementById('app-screen').style.display = 'none';
-      document.getElementById('pin-screen').style.display = 'flex';
-      document.getElementById('pin-title').textContent = 'Buat PIN Baru';
-      document.getElementById('pin-sub').textContent = 'Buat 6 digit PIN untuk akses cepat';
-      document.getElementById('pin-submit-btn').textContent = 'SIMPAN PIN';
-      window.pinMode = 'setup';
-    } else {
-      document.getElementById('app-screen').style.display = 'none';
-      document.getElementById('pin-screen').style.display = 'flex';
-      document.getElementById('pin-title').textContent = 'Masukkan PIN';
-      document.getElementById('pin-sub').textContent = 'Keamanan aktif';
-      document.getElementById('pin-submit-btn').textContent = 'BUKA APLIKASI';
-      window.pinMode = 'verify';
-      
-      if (window.pendingUnlock) {
-          window.pendingUnlock = false;
-          unlockApp();
-      }
+    // FETCH PIN FROM FIREBASE
+    const secRef = doc(db, 'users', user.uid, 'settings', 'security');
+    try {
+        const secSnap = await getDoc(secRef);
+        document.getElementById('app-pin').style.display = 'block';
+        
+        if (!secSnap.exists() || !secSnap.data().pin) {
+          document.getElementById('app-screen').style.display = 'none';
+          document.getElementById('pin-screen').style.display = 'flex';
+          document.getElementById('pin-title').textContent = 'Buat PIN Baru';
+          document.getElementById('pin-sub').textContent = 'Buat 6 digit PIN untuk akses cepat';
+          document.getElementById('pin-submit-btn').textContent = 'SIMPAN PIN';
+          window.pinMode = 'setup';
+          window.userCloudPin = null;
+        } else {
+          document.getElementById('app-screen').style.display = 'none';
+          document.getElementById('pin-screen').style.display = 'flex';
+          document.getElementById('pin-title').textContent = 'Masukkan PIN';
+          document.getElementById('pin-sub').textContent = 'Keamanan aktif';
+          document.getElementById('pin-submit-btn').textContent = 'BUKA APLIKASI';
+          window.pinMode = 'verify';
+          window.userCloudPin = secSnap.data().pin;
+          
+          if (window.pendingUnlock) {
+              window.pendingUnlock = false;
+              unlockApp();
+          }
+        }
+    } catch(err) {
+        console.error("Gagal memuat PIN dari Cloud:", err);
     }
     
     // START TIMER SETELAH LOAD
@@ -1169,22 +1188,28 @@ onAuthStateChanged(auth, user => {
   }
 });
 
-window.verifyPin = function() {
+window.verifyPin = async function() {
   const pinInput = document.getElementById('app-pin').value;
   const errEl = document.getElementById('pin-err');
   if (pinInput.length < 6) { errEl.textContent = 'PIN harus 6 digit.'; errEl.style.display = 'block'; return; }
   errEl.style.display = 'none';
 
   if (window.pinMode === 'setup') {
-    localStorage.setItem('app_pin_' + currentUser.uid, pinInput);
-    Swal.fire({position: 'center', icon: 'success', title: 'PIN Berhasil Dibuat!', showConfirmButton: false, timer: 1500, background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)'});
-    unlockApp();
+    document.getElementById('pin-submit-btn').textContent = 'MENYIMPAN...';
+    try {
+        await setDoc(doc(db, 'users', currentUser.uid, 'settings', 'security'), { pin: pinInput }, { merge: true });
+        window.userCloudPin = pinInput;
+        Swal.fire({position: 'center', icon: 'success', title: 'PIN Berhasil Dibuat!', showConfirmButton: false, timer: 1500, background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)'});
+        unlockApp();
+    } catch(e) {
+        errEl.textContent = 'Gagal menyimpan PIN ke server.'; errEl.style.display = 'block';
+        document.getElementById('pin-submit-btn').textContent = 'SIMPAN PIN';
+    }
   } else {
     const uid = currentUser ? currentUser.uid : localStorage.getItem('last_uid_rhn');
     if (!uid) return;
     
-    const savedPin = localStorage.getItem('app_pin_' + uid);
-    if (pinInput === savedPin) {
+    if (pinInput === window.userCloudPin) {
       if (currentUser) {
         unlockApp();
       } else {
@@ -1219,17 +1244,78 @@ function unlockApp() {
 
 window.resetAccount = function() {
   Swal.fire({
-    title: 'Ganti Akun?', text: "PIN di perangkat ini akan direset dan lu harus login Email lagi.",
+    title: 'Ganti Akun?', text: "Lu harus login Email lagi.",
     icon: 'warning', showCancelButton: true, background: 'var(--card)', color: 'var(--text)',
     confirmButtonColor: 'var(--red2)', cancelButtonColor: 'var(--bg3)', confirmButtonText: 'Ya, Ganti'
   }).then((result) => {
     if (result.isConfirmed) {
-      if (currentUser) localStorage.removeItem('app_pin_' + currentUser.uid);
       localStorage.removeItem('last_uid_rhn');
       document.getElementById('app-pin').value = '';
       doLogout();
     }
   });
+};
+
+// FIX PERMINTAAN: FUNGSI RESET PIN DARI HALAMAN AWAL (OPSI LANGSUNG MUNCUL)
+window.resetPinFromLogin = async function() {
+    const uid = currentUser ? currentUser.uid : localStorage.getItem('last_uid_rhn');
+    if (!uid) {
+        return Swal.fire({icon: 'error', title: 'Belum Login', text: 'Tunggu proses ke server sebentar', background: 'var(--card)', color: 'var(--text)'});
+    }
+
+    // LANGSUNG KELUAR OPSI, TANPA MINTA PIN LAMA DULUAN
+    const { value: choice } = await Swal.fire({
+        title: 'Opsi Keamanan',
+        text: 'Pilih tindakan untuk PIN lu:',
+        icon: 'question',
+        showCancelButton: true,
+        showDenyButton: true,
+        confirmButtonText: 'Lupa PIN (Buat Baru)',
+        denyButtonText: 'Ingat PIN (Ganti PIN)',
+        cancelButtonText: 'Batal',
+        background: 'var(--card)', color: 'var(--text)',
+        confirmButtonColor: 'var(--red2)', denyButtonColor: 'var(--gold)', cancelButtonColor: 'var(--bg3)'
+    });
+
+    const promptNewPin = async () => {
+        const { value: newPin } = await Swal.fire({
+            title: 'Buat PIN Baru',
+            text: 'Masukkan 6 angka PIN baru kamu',
+            input: 'password',
+            inputAttributes: { inputmode: 'numeric', maxlength: 6, style: 'text-align: center; letter-spacing: 10px; font-size: 24px;', autofocus: true },
+            background: 'var(--card)', color: 'var(--text)',
+            confirmButtonColor: 'var(--gold)', confirmButtonText: 'SIMPAN PIN BARU'
+        });
+
+        if (newPin && newPin.length === 6) {
+            try {
+                await setDoc(doc(db, 'users', uid, 'settings', 'security'), { pin: newPin }, { merge: true });
+                window.userCloudPin = newPin;
+                Swal.fire({icon:'success', title:'PIN Berhasil Disimpan!', background:'var(--card)', color:'var(--text)', timer: 1500, showConfirmButton: false});
+                document.getElementById('app-pin').value = '';
+            } catch(e) {
+                Swal.fire({icon:'error', title:'Gagal mengubah PIN', text: e.message, background:'var(--card)', color:'var(--text)'});
+            }
+        } else if (newPin) {
+            Swal.fire({icon:'warning', title:'Gagal, harus 6 digit!', background:'var(--card)', color:'var(--text)'});
+        }
+    };
+
+    if (choice === true) {
+        // LUPA PIN -> Langsung ke prompt PIN BARU
+        promptNewPin();
+    } else if (choice === false) {
+        // GANTI PIN -> Minta PIN lama dulu
+        const { value: oldPin } = await Swal.fire({
+            title: 'Masukkan PIN Lama',
+            input: 'password',
+            inputAttributes: { inputmode: 'numeric', maxlength: 6, style: 'text-align: center; letter-spacing: 10px; font-size: 24px;', autofocus: true },
+            background: 'var(--card)', color: 'var(--text)', confirmButtonColor: 'var(--border2)'
+        });
+        if (!oldPin) return;
+        if (oldPin !== window.userCloudPin) return Swal.fire({icon:'error', title:'PIN Lama Salah!', background:'var(--card)', color:'var(--text)'});
+        promptNewPin();
+    }
 };
 
 document.getElementById('app-pin').addEventListener('input', function(e) {
@@ -1580,7 +1666,7 @@ function renderWalletBalances() {
   container.innerHTML = html;
 }
 
-function mkChart(id,labels,incData,expData){ if(charts[id]) charts[id].destroy(); const c=document.getElementById(id); if(!c)return; const isLight = document.body.classList.contains('light-mode'); charts[id]=new Chart(c,{type:'bar',data:{labels,datasets:[{label:'Pemasukan',data:incData,backgroundColor:isLight?'#10B981':'#10B981',borderRadius:4,barPercentage:0.6},{label:'Pengeluaran',data:expData,backgroundColor:isLight?'#F87171':'#F87171',borderRadius:4,barPercentage:0.6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:isLight?'#888':'#888',font:{size:8,family:"'Outfit'",style:'normal'},autoSkip:true,maxTicksLimit:15,maxRotation:0,minRotation:0},grid:{display:false},border:{display:false}},y:{ticks:{color:isLight?'#888':'#888',font:{size:10,family:"'Outfit'",style:'normal'},callback:v=>Intl.NumberFormat('id-ID',{notation:'compact'}).format(v)},grid:{color:isLight?'#DEE2E6':'#222228',drawBorder:false},border:{display:false}}}}}); }
+function mkChart(id,labels,incData,expData){ if(charts[id]) charts[id].destroy(); const c=document.getElementById(id); if(!c)return; const isLight = document.body.classList.contains('light-mode'); const isMobile=window.innerWidth<=768; charts[id]=new Chart(c,{type:'bar',data:{labels,datasets:[{label:'Pemasukan',data:incData,backgroundColor:isLight?'#10B981':'#10B981',borderRadius:4,barPercentage:0.6},{label:'Pengeluaran',data:expData,backgroundColor:isLight?'#F87171':'#F87171',borderRadius:4,barPercentage:0.6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:{color:isLight?'#888':'#888',font:{size:isMobile?5:8,family:"'Outfit'",style:'normal'},autoSkip:false,maxRotation:0,minRotation:0},grid:{display:false},border:{display:false}},y:{ticks:{color:isLight?'#888':'#888',font:{size:isMobile?8:10,family:"'Outfit'",style:'normal'},callback:v=>Intl.NumberFormat('id-ID',{notation:'compact'}).format(v)},grid:{color:isLight?'#DEE2E6':'#222228',drawBorder:false},border:{display:false}}}}}); }
 
 window.renderDaily=function(){ const pick=document.getElementById('pick-daily').value, target=pick?new Date(pick).toDateString():new Date().toDateString(), arr=txs.filter(t=>new Date(t.date).toDateString()===target).sort((a,b)=>new Date(b.date)-new Date(a.date)); renderSumGrid(document.getElementById('daily-sum'),arr); renderList(document.getElementById('daily-body'), arr); };
 function wkKey(d){
@@ -1816,24 +1902,34 @@ window.addEventListener('DOMContentLoaded', (event) => {
   const amountInput = document.getElementById('f-amount');
   const catInput = document.getElementById('f-cat');
   
-  // FIX INPUT ANGKA KETAT
   if (amountInput) {
-    amountInput.type = 'tel'; 
+    amountInput.type = 'text'; 
     amountInput.inputMode = 'numeric'; 
-    amountInput.pattern = '[0-9]*';
     
     amountInput.addEventListener('blur', function() {
-        let val = this.value.replace(/[^0-9]/g, ''); 
-        if (val) {
-            this.value = parseInt(val, 10).toLocaleString('id-ID');
-        } else {
-            this.value = '';
+        let val = this.value.replace(/[^0-9+\-*/().]/g, ''); 
+        try {
+            if(val && /[+\-*/]/.test(val)) {
+                let cleanMath = val.replace(/\./g, '');
+                let result = new Function('return (' + cleanMath + ')')(); 
+                this.value = parseInt(result, 10).toLocaleString('id-ID');
+                Toast.fire({ icon: 'info', title: 'Auto-hitung berhasil!' });
+            } else if (val) {
+                this.value = parseInt(val.replace(/\./g, ''), 10).toLocaleString('id-ID');
+            }
+        } catch (e) {
+            this.value = ''; 
         }
     });
 
     amountInput.addEventListener('input', function(e) {
-      let nums = this.value.replace(/[^0-9]/g, '');
-      this.value = nums ? parseInt(nums, 10).toLocaleString('id-ID') : '';
+      let raw = this.value.replace(/[^0-9+\-*/().]/g, '');
+      if(/[+\-*/()]/.test(raw)) {
+          this.value = raw;
+      } else {
+          let nums = raw.replace(/\./g, '');
+          this.value = nums ? parseInt(nums, 10).toLocaleString('id-ID') : '';
+      }
     });
   }
 
@@ -2085,24 +2181,15 @@ window.addEventListener('DOMContentLoaded', (event) => {
 window.addEventListener('load', () => {
   const pContainer = document.getElementById('splash-particles');
   if (pContainer) {
-    // 100x Better: Ledakan partikel ke segala arah
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 15; i++) {
       const p = document.createElement('div');
       p.className = 'particle';
-      
-      const angle = Math.random() * 360;
-      const distance = Math.random() * 150 + 50; 
-      const tx = Math.cos(angle * Math.PI / 180) * distance;
-      const ty = Math.sin(angle * Math.PI / 180) * distance;
-      
-      p.style.width = Math.random() * 3 + 1 + 'px';
+      p.style.left = Math.random() * 100 + '%';
+      p.style.top = Math.random() * 100 + '%';
+      p.style.width = Math.random() * 4 + 2 + 'px';
       p.style.height = p.style.width;
-      
-      p.style.setProperty('--tx', `${tx}px`);
-      p.style.setProperty('--ty', `${ty}px`);
-      
-      p.style.animation = `particleBurst ${Math.random() * 1.5 + 1}s cubic-bezier(0.165, 0.84, 0.44, 1) forwards`;
-      p.style.animationDelay = Math.random() * 0.5 + 's';
+      p.style.animationDelay = Math.random() * 2 + 's';
+      p.style.animationDuration = Math.random() * 2 + 2 + 's';
       pContainer.appendChild(p);
     }
   }
@@ -2111,9 +2198,9 @@ window.addEventListener('load', () => {
     const splash = document.getElementById('splash-screen');
     if (splash) {
       splash.classList.add('splash-exit');
-      setTimeout(() => splash.remove(), 900); 
+      setTimeout(() => splash.remove(), 800);
     }
-  }, 3500); 
+  }, 3000); 
 });
 </script>
 </body>
