@@ -93,7 +93,7 @@ body {
 .logo-text .main-text { font-size: 18px; font-weight: 800; color: var(--text); letter-spacing: 0.5px; }
 .logo-text .sub-text { font-size: 10px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; }
 
-.status-row { display: flex; gap: 12px; margin-bottom: 20px; }
+.status-row { display: flex; gap: 12px; margin-bottom: 20px; align-items: stretch; flex-wrap: wrap; }
 .status-pill {
   background: var(--bg2); border: 1px solid var(--border); border-radius: 12px;
   padding: 8px 16px; display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -519,11 +519,24 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
     </div>
   </div>
   
-  <div class="status-row">
-    <div class="status-pill usd-status-pill">
+  <div class="status-row" style="align-items: stretch; flex-wrap: wrap;">
+    <div class="status-pill usd-status-pill" style="flex: 1; min-width: max-content;">
+      <span style="font-size: 11px; font-weight: 800; color: var(--text3);">USD</span>
       <span class="usd-val" id="usd-rate-val">...</span>
     </div>
-    <div class="status-pill">
+    <div class="status-pill usd-status-pill" style="border-color: var(--gold); flex: 1; min-width: max-content;">
+      <span style="font-size: 11px; font-weight: 800; color: var(--gold);">XAU</span>
+      <span class="usd-val" id="xau-rate-val" style="color: var(--text);">...</span>
+    </div>
+    <div class="status-pill usd-status-pill" style="border-color: var(--gold); flex: 1; min-width: max-content;">
+      <span style="font-size: 11px; font-weight: 800; color: var(--gold);">/oz</span>
+      <span class="usd-val" id="xau-idr-oz" style="color: var(--text);">...</span>
+    </div>
+    <div class="status-pill usd-status-pill" style="border-color: var(--gold); flex: 1; min-width: max-content;">
+      <span style="font-size: 11px; font-weight: 800; color: var(--gold);">/gr</span>
+      <span class="usd-val" id="xau-idr-gr" style="color: var(--text);">...</span>
+    </div>
+    <div class="status-pill" style="flex: 1; min-width: max-content;">
       <span class="sync-dot" id="sync-dot" style="background:var(--text3);"></span>
       <span class="sync-text" id="sync-label">MENGHUBUNGKAN...</span>
     </div>
@@ -954,6 +967,24 @@ function initLiveUSD() {
 }
 async function fetchUSDRate() { try { const res = await fetch('https://api.exchangerate-api.com/v4/latest/USD'); currentUSDRate = (await res.json()).rates.IDR; document.getElementById('usd-rate-val').textContent = kursIndo.format(currentUSDRate); refreshAll(); } catch (e) { document.getElementById('usd-rate-val').textContent = "Offline"; } }
 fetchUSDRate().then(initLiveUSD); setInterval(fetchUSDRate, 300000); 
+
+function initLiveXAU() {
+  const socketXAU = new WebSocket('wss://stream.binance.com:9443/ws/paxgusdt@ticker');
+  socketXAU.addEventListener('message', e => {
+      const newPrice = parseFloat(JSON.parse(e.data).c);
+      if (newPrice) { 
+          document.getElementById('xau-rate-val').textContent = '$' + newPrice.toFixed(2); 
+          if(currentUSDRate > 0) {
+              const idrPriceOz = newPrice * currentUSDRate;
+              const idrPriceGram = idrPriceOz / 31.1034768; // 1 Troy Ounce = 31.103... gram
+              document.getElementById('xau-idr-oz').textContent = `Rp ` + kursIndo.format(idrPriceOz);
+              document.getElementById('xau-idr-gr').textContent = `Rp ` + kursIndo.format(idrPriceGram);
+          }
+      }
+  });
+  socketXAU.addEventListener('close', () => setTimeout(initLiveXAU, 3000));
+}
+initLiveXAU();
 
 function showErr(msg){ const el=document.getElementById('auth-err'); el.textContent=msg; el.style.display='block'; }
 function hideErr(){ document.getElementById('auth-err').style.display='none'; }
