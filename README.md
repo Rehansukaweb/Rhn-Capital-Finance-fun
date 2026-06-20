@@ -520,19 +520,22 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
   </div>
   
   <div class="status-row">
-    <div class="status-pill usd-status-pill">
-      <span class="usd-val" id="usd-rate-val">...</span>
+    <!-- Pill USD -->
+    <div class="status-pill usd-status-pill" style="padding: 6px 4px;">
+      <span class="usd-val" id="usd-rate-val" style="font-size: 11px;">...</span>
     </div>
     
-    <div class="status-pill" style="padding: 8px 6px; gap: 4px; font-size: 9px; font-weight: 800; color: var(--gold);">
-      <span>XAU <span id="xau-rate-val" style="color: var(--text); font-family: 'JetBrains Mono', monospace; margin-left: 2px;">...</span></span>
+    <!-- Pill XAU (Dibuat Atas-Bawah & Diperkecil) -->
+    <div class="status-pill" style="padding: 6px 4px; flex-direction: column; justify-content: center; gap: 2px; font-size: 8px; font-weight: 800; color: var(--gold);">
+      <span style="line-height: 1;">XAU <span id="xau-rate-val" style="color: var(--text); font-family: 'JetBrains Mono', monospace; margin-left: 2px;">...</span></span>
       <span id="xau-idr-oz" style="display: none;"></span>
-      <span>/GR <span id="xau-idr-gr" style="color: var(--text); font-family: 'JetBrains Mono', monospace; margin-left: 2px;">...</span></span>
+      <span style="line-height: 1;">/GR <span id="xau-idr-gr" style="color: var(--text); font-family: 'JetBrains Mono', monospace; margin-left: 2px;">...</span></span>
     </div>
 
-    <div class="status-pill">
-      <span class="sync-dot" id="sync-dot" style="background:var(--text3);"></span>
-      <span class="sync-text" id="sync-label">MENGHUBUNGKAN...</span>
+    <!-- Pill Tersinkron (Disamakan ukurannya) -->
+    <div class="status-pill" style="padding: 6px 4px; gap: 4px;">
+      <span class="sync-dot" id="sync-dot" style="background:var(--text3); width: 6px; height: 6px;"></span>
+      <span class="sync-text" id="sync-label" style="font-size: 8px; letter-spacing: 0.5px;">MENGHUBUNGKAN...</span>
     </div>
   </div>
 
