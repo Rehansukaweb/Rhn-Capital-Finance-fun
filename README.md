@@ -68,10 +68,8 @@ body {
 /* FIX POP-UP MUNCUL DI BELAKANG LAYAR PIN */
 .swal2-container { z-index: 100000 !important; }
 
-/* FIX BOTTOM SHEET MODAL ELEGANT */
-@media (max-width: 768px) {
-  .rounded-bottom-sheet { border-bottom-left-radius: 0 !important; border-bottom-right-radius: 0 !important; border-top-left-radius: 24px !important; border-top-right-radius: 24px !important; }
-}
+/* FIX FULLSCREEN MODAL ELEGANT */
+.fullscreen-sheet { border-radius: 0 !important; min-height: 100vh !important; width: 100vw !important; margin: 0 !important; }
 
 /* TOP TEXT & EXTERNAL LINKS */
 .top-title {
@@ -755,15 +753,13 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
 
 <div id="page-pengaturan" class="page">
   
-  <!-- ================= FITUR KONVERTER MATA UANG ONLINE (NEW DROPDOWN UI) ================= -->
   <div class="set-group" style="padding: 0; overflow: hidden; border-color: var(--border2);">
     <div class="set-title" style="padding: 16px 16px 8px 16px; margin: 0; border-bottom: none; font-size: 13px;">
       ⬅️ Kalkulator Mata Uang Online <span style="margin-left: 6px; font-size: 9px; background: var(--green2); color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 800;">LIVE REALTIME Ticker</span>
     </div>
     
     <div id="calc-display" style="display: flex; flex-direction: column; padding: 0 8px;">
-      <!-- List otomatis di-generate JavaScript -->
-    </div>
+      </div>
     
     <div style="font-size: 9px; color: var(--text3); text-align: center; padding: 4px 0 8px 0;">
       Diperbarui pada <span id="calc-last-update">...</span>
@@ -791,8 +787,6 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
       </div>
     </div>
   </div>
-  <!-- ====================================================================================== -->
-  
   <div class="set-group">
     <div class="set-title">🔒 KEAMANAN AKUN</div>
     <div class="set-item">
@@ -1200,7 +1194,7 @@ window.swapCalcCurr = function() {
 }
 
 window.openCurrencySelector = function(rId) {
-    let html = '<div style="display:flex; flex-direction:column; gap:8px; max-height:60vh; overflow-y:auto; padding-bottom:12px; scrollbar-width:none;">';
+    let html = '<div style="display:flex; flex-direction:column; gap:8px; height:calc(100vh - 120px); overflow-y:auto; padding-bottom:12px; scrollbar-width:none;">';
     calcCurrencies.forEach(c => {
         let isActive = (rId === 'from' && calcFromCode === c.code) || (rId === 'to' && calcToCode === c.code);
         html += `<button onclick="changeCalcCurr('${rId}', '${c.code}'); Swal.close();" style="background:${isActive?'var(--bg3)':'var(--bg2)'}; color:var(--text); border:1px solid ${isActive?'var(--gold)':'var(--border)'}; padding:14px; border-radius:12px; font-family:'Outfit'; text-align:left; font-size:14px; font-weight:600; display:flex; align-items:center; gap:12px;"><span style="font-size:20px;">${c.flag}</span> ${c.code} - ${c.name}</button>`;
@@ -1209,8 +1203,8 @@ window.openCurrencySelector = function(rId) {
     Swal.fire({
         title: '<div style="font-size:18px; text-align:left; font-weight:800; border-bottom:1px dashed var(--border); padding-bottom:12px; margin-bottom:8px;">Pilih Mata Uang</div>',
         html: html, showConfirmButton: false, background: 'var(--card)', color: 'var(--text)',
-        position: window.innerWidth <= 768 ? 'bottom' : 'center', padding: '24px 16px', margin:0,
-        width: window.innerWidth <= 768 ? '100%' : '400px', customClass: { popup: 'rounded-bottom-sheet' }
+        position: 'center', padding: '24px 16px', margin:0,
+        width: '100%', grow: 'fullscreen', customClass: { popup: 'fullscreen-sheet' }
     });
 }
 
@@ -1350,7 +1344,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ui.addEventListener('click', (e) => {
             e.stopPropagation();
             if (navigator.vibrate) navigator.vibrate(10);
-            let html = '<div style="display:flex; flex-direction:column; gap:8px; max-height:60vh; overflow-y:auto; padding-bottom:12px; scrollbar-width:none;">';
+            let html = '<div style="display:flex; flex-direction:column; gap:8px; height:calc(100vh - 120px); overflow-y:auto; padding-bottom:12px; scrollbar-width:none;">';
             Array.from(sel.options).forEach((opt, idx) => {
                 if(!opt.value && opt.text.toLowerCase().includes('pilih')) return; 
                 let isSel = sel.value === opt.value;
@@ -1360,13 +1354,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
             Swal.fire({
                 title: '<div style="font-size:16px; text-align:left; font-weight:800; color:var(--text); border-bottom: 1px dashed var(--border); padding-bottom: 12px; margin-bottom: 8px;">Pilih Opsi</div>',
-                html: html, showConfirmButton: false, background: 'var(--card)', 
-                position: window.innerWidth <= 768 ? 'bottom' : 'center', 
+                html: html, showConfirmButton: false, background: 'var(--card)', color: 'var(--text)',
+                position: 'center', 
                 padding: '24px 16px 16px 16px', margin:0, 
-                width: window.innerWidth <= 768 ? '100%' : '400px',
-                customClass: { popup: 'rounded-bottom-sheet' },
-                showClass: { popup: window.innerWidth <= 768 ? 'animate__animated animate__slideInUp' : '' },
-                hideClass: { popup: window.innerWidth <= 768 ? 'animate__animated animate__slideOutDown' : '' }
+                width: '100%', grow: 'fullscreen',
+                customClass: { popup: 'fullscreen-sheet' }
             });
         });
     });
