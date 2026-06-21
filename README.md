@@ -68,6 +68,11 @@ body {
 /* FIX POP-UP MUNCUL DI BELAKANG LAYAR PIN */
 .swal2-container { z-index: 100000 !important; }
 
+/* FIX BOTTOM SHEET MODAL ELEGANT */
+@media (max-width: 768px) {
+  .rounded-bottom-sheet { border-bottom-left-radius: 0 !important; border-bottom-right-radius: 0 !important; border-top-left-radius: 24px !important; border-top-right-radius: 24px !important; }
+}
+
 /* TOP TEXT & EXTERNAL LINKS */
 .top-title {
   color: var(--blue-title); font-size: 22px; font-weight: 800;
@@ -150,7 +155,8 @@ body {
 .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
 .m-card { background: var(--card); border-radius: var(--radius); padding: 16px; border: 1px solid var(--border); display: flex; flex-direction: column; }
 .m-label { font-size: 9px; font-weight: 800; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; letter-spacing: 0.5px; }
-.m-val { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 800; margin-bottom: 4px; white-space: nowrap; color: var(--text); }
+.m-val { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 800; margin-bottom: 4px; color: var(--text); white-space: nowrap; overflow-x: auto; scrollbar-width: none; }
+.m-val::-webkit-scrollbar { display: none; }
 
 .usd-pill {
   display: inline-block; background: var(--bg3); color: var(--text3);
@@ -168,7 +174,8 @@ body {
 .wallet-scroll::-webkit-scrollbar { display: none; }
 .w-card { background: var(--bg3); border: 1px solid var(--border); border-radius: 12px; padding: 8px; display: flex; flex-direction: column; justify-content: center; overflow: hidden; position: relative; }
 .w-label { font-size: 8px; font-weight: 800; color: var(--text3); text-transform: uppercase; margin-bottom: 2px; letter-spacing: 0.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.w-val { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.w-val { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--text); white-space: nowrap; overflow-x: auto; scrollbar-width: none; }
+.w-val::-webkit-scrollbar { display: none; }
 .w-val.min { color: var(--red2); }
 .w-pct-badge { position: absolute; top: 8px; right: 8px; font-size: 8px; font-weight: 800; background: var(--border); padding: 2px 4px; border-radius: 4px; color: var(--text2); display: none; }
 
@@ -194,6 +201,9 @@ body {
   appearance: none; -webkit-appearance: none; transition: all 0.3s ease;
   box-shadow: 0 2px 10px rgba(0,0,0,0.03); 
 }
+#f-amount { overflow-x: auto; white-space: nowrap; scrollbar-width: none; font-size: 20px; font-weight: 800; }
+#f-amount::-webkit-scrollbar { display: none; }
+
 .f-input-dark:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.15); }
 .f-input-dark::placeholder { color: var(--text3); }
 
@@ -248,7 +258,6 @@ select.f-input-dark option { background: var(--bg2); color: var(--text); font-we
 .calc-flag { display: flex; align-items: center; justify-content: center; }
 .calc-code-wrap { display: flex; flex-direction: column; align-items: flex-start; }
 
-/* Kustomisasi Select agar rapih menyatu dengan UI */
 .calc-select {
     background: transparent; color: var(--text); border: none; font-size: 16px; font-weight: 800;
     outline: none; cursor: pointer; font-family: 'Outfit', sans-serif;
@@ -259,8 +268,9 @@ select.f-input-dark option { background: var(--bg2); color: var(--text); font-we
 .calc-select option { background: var(--bg2); color: var(--text); font-size: 14px; font-weight: 600; }
 
 .calc-name { font-size: 10px; color: var(--text3); margin-top: 2px; padding-left: 2px; }
-.calc-right { text-align: right; }
-.calc-amount { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 2px; transition: color 0.2s; }
+.calc-right { text-align: right; overflow: hidden; }
+.calc-amount { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 2px; transition: color 0.2s; max-width: 55vw; overflow-x: auto; white-space: nowrap; scrollbar-width: none; }
+.calc-amount::-webkit-scrollbar { display: none; }
 
 .swap-btn { background: var(--bg2); border: 1px solid var(--border); color: var(--text3); width: 32px; height: 32px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
 .swap-btn:hover { background: var(--bg3); color: var(--text); border-color: var(--text3); transform: scale(1.1); }
@@ -996,7 +1006,6 @@ const CATS = {
 let txs=[], curType='income', activePage='dashboard', charts={}, currentUSDRate = 16000, currentUser=null, unsubListener=null, authMode='login';
 let editId = null;
 
-// VARIABEL PREFERENSI & PENGATURAN EKSTRA
 let appPrefs = { type: 'income', category: '', wallet: 'Kas Tunai' };
 let extraPrefs = { 
     ext_autolock: 'off', 
@@ -1025,9 +1034,7 @@ const nowISO = () => new Date().toISOString().slice(0,16);
 const kursIndo = new Intl.NumberFormat('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 const getUSD = n => '$' + (n / currentUSDRate).toFixed(2);
 
-// ================= AMBIL DATA DAN HUBUNGKAN KE MULTI-STREAM WEBSOCKET (REALTIME ULTIMATE) =================
 function initLiveCurrencies() {
-  // Langsung connect ke combined stream Binance untuk major global fiat tickers
   const socket = new WebSocket('wss://stream.binance.com:9443/stream?streams=usdtidr@ticker/eurusdt@ticker/gbpusdt@ticker/audusdt@ticker/brlusdt@ticker/tryusdt@ticker');
   
   socket.addEventListener('message', e => {
@@ -1046,10 +1053,8 @@ function initLiveCurrencies() {
               
               if (calcRates) {
                   calcRates['IDR'] = currentUSDRate;
-                  // BERIKAN FLUKTUASI MIKRO (Pip Noise) ke seluruh mata uang dunia agar semuanya berdetak/kedip LIVE secara organik
                   Object.keys(calcRates).forEach(code => {
                       if (code !== 'USD' && code !== 'IDR' && code !== 'EUR' && code !== 'GBP' && code !== 'AUD' && code !== 'TRY' && code !== 'BRL') {
-                          // Variasi pip spread interbank harian super halus (-0.002% s/d +0.002%)
                           const noise = 1 + (Math.random() - 0.5) * 0.00004;
                           calcRates[code] *= noise;
                       }
@@ -1058,7 +1063,7 @@ function initLiveCurrencies() {
               refreshAll();
           }
       } else if (stream === 'eurusdt@ticker') {
-          if (calcRates) calcRates['EUR'] = 1 / price; // Konversi USD per EUR -> EUR per USD
+          if (calcRates) calcRates['EUR'] = 1 / price;
           window.renderCalcDisplay();
       } else if (stream === 'gbpusdt@ticker') {
           if (calcRates) calcRates['GBP'] = 1 / price;
@@ -1112,7 +1117,6 @@ function initLiveXAU() {
 }
 initLiveXAU();
 
-// ================= FITUR BARU: KALKULATOR KONVERTER 2-ARAH (DROPDOWN) =================
 let calcRates = null;
 let calcFromCode = 'USD';
 let calcToCode = 'IDR';
@@ -1123,155 +1127,27 @@ const calcCurrencies = [
   { code: 'IDR', name: 'Rupiah Indonesia', flag: '🇮🇩' },
   { code: 'USD', name: 'Dolar Amerika', flag: '🇺🇸' },
   { code: 'AED', name: 'Dirham Uni Emirat Arab', flag: '🇦🇪' },
-  { code: 'AFN', name: 'Afghani Afganistan', flag: '🇦🇫' },
-  { code: 'ALL', name: 'Lek Albania', flag: '🇦🇱' },
-  { code: 'AMD', name: 'Dram Armenia', flag: '🇦🇲' },
-  { code: 'ANG', name: 'Guilder Antillen', flag: '🇨🇼' },
-  { code: 'AOA', name: 'Kwanza Angola', flag: '🇦🇴' },
-  { code: 'ARS', name: 'Peso Argentina', flag: '🇦🇷' },
   { code: 'AUD', name: 'Dolar Australia', flag: '🇦🇺' },
-  { code: 'AWG', name: 'Florin Aruba', flag: '🇦🇼' },
-  { code: 'AZN', name: 'Manat Azerbaijan', flag: '🇦🇿' },
-  { code: 'BAM', name: 'Mark Bosnia', flag: '🇧🇦' },
-  { code: 'BBD', name: 'Dolar Barbados', flag: '🇧🇧' },
-  { code: 'BDT', name: 'Taka Bangladesh', flag: '🇧🇩' },
-  { code: 'BGN', name: 'Lev Bulgaria', flag: '🇧🇬' },
-  { code: 'BHD', name: 'Dinar Bahrain', flag: '🇧🇭' },
-  { code: 'BIF', name: 'Franc Burundi', flag: '🇧🇮' },
-  { code: 'BMD', name: 'Dolar Bermuda', flag: '🇧🇲' },
-  { code: 'BND', name: 'Dolar Brunei', flag: '🇧🇳' },
-  { code: 'BOB', name: 'Boliviano Bolivia', flag: '🇧🇴' },
   { code: 'BRL', name: 'Real Brasil', flag: '🇧🇷' },
-  { code: 'BSD', name: 'Dolar Bahama', flag: '🇧🇸' },
-  { code: 'BTN', name: 'Ngultrum Bhutan', flag: '🇧🇹' },
-  { code: 'BWP', name: 'Pula Botswana', flag: '🇧🇼' },
-  { code: 'BYN', name: 'Rubel Belarusia', flag: '🇧🇾' },
-  { code: 'BZD', name: 'Dolar Belize', flag: '🇧🇿' },
   { code: 'CAD', name: 'Dolar Kanada', flag: '🇨🇦' },
-  { code: 'CDF', name: 'Franc Kongo', flag: '🇨🇩' },
   { code: 'CHF', name: 'Franc Swiss', flag: '🇨🇭' },
-  { code: 'CLP', name: 'Peso Chili', flag: '🇨🇱' },
   { code: 'CNY', name: 'Yuan Tiongkok', flag: '🇨🇳' },
-  { code: 'COP', name: 'Peso Kolombia', flag: '🇨🇴' },
-  { code: 'CRC', name: 'Colon Kosta Rika', flag: '🇨🇷' },
-  { code: 'CUP', name: 'Peso Kuba', flag: '🇨🇺' },
-  { code: 'CVE', name: 'Escudo Tj. Verde', flag: '🇨🇻' },
-  { code: 'CZK', name: 'Koruna Ceko', flag: '🇨🇿' },
-  { code: 'DJF', name: 'Franc Djibouti', flag: '🇩🇯' },
-  { code: 'DKK', name: 'Krone Denmark', flag: '🇩🇰' },
-  { code: 'DOP', name: 'Peso Dominika', flag: '🇩🇴' },
-  { code: 'DZD', name: 'Dinar Aljazair', flag: '🇩🇿' },
-  { code: 'EGP', name: 'Pound Mesir', flag: '🇪🇬' },
-  { code: 'ERN', name: 'Nakfa Eritrea', flag: '🇪🇷' },
-  { code: 'ETB', name: 'Birr Etiopia', flag: '🇪🇹' },
   { code: 'EUR', name: 'Euro', flag: '🇪🇺' },
-  { code: 'FJD', name: 'Dolar Fiji', flag: '🇫🇯' },
-  { code: 'FKP', name: 'Pound Falkland', flag: '🇫🇰' },
   { code: 'GBP', name: 'Poundsterling Inggris', flag: '🇬🇧' },
-  { code: 'GEL', name: 'Lari Georgia', flag: '🇬🇪' },
-  { code: 'GHS', name: 'Cedi Ghana', flag: '🇬🇭' },
-  { code: 'GIP', name: 'Pound Gibraltar', flag: '🇬🇮' },
-  { code: 'GMD', name: 'Dalasi Gambia', flag: '🇬🇲' },
-  { code: 'GNF', name: 'Franc Guinea', flag: '🇬🇳' },
-  { code: 'GTQ', name: 'Quetzal Guatemala', flag: '🇬🇹' },
-  { code: 'GYD', name: 'Dolar Guyana', flag: '🇬🇾' },
   { code: 'HKD', name: 'Dolar Hong Kong', flag: '🇭🇰' },
-  { code: 'HNL', name: 'Lempira Honduras', flag: '🇭🇳' },
-  { code: 'HRK', name: 'Kuna Kroasia', flag: '🇭🇷' },
-  { code: 'HTG', name: 'Gourde Haiti', flag: '🇭🇹' },
-  { code: 'HUF', name: 'Forint Hungaria', flag: '🇭🇺' },
-  { code: 'ILS', name: 'Shekel Israel', flag: '🇮🇱' },
   { code: 'INR', name: 'Rupee India', flag: '🇮🇳' },
-  { code: 'IQD', name: 'Dinar Irak', flag: '🇮🇶' },
-  { code: 'IRR', name: 'Rial Iran', flag: '🇮🇷' },
-  { code: 'ISK', name: 'Krona Islandia', flag: '🇮🇸' },
-  { code: 'JMD', name: 'Dolar Jamaika', flag: '🇯🇲' },
-  { code: 'JOD', name: 'Dinar Yordania', flag: '🇯🇴' },
   { code: 'JPY', name: 'Yen Jepang', flag: '🇯🇵' },
-  { code: 'KES', name: 'Shilling Kenya', flag: '🇰🇪' },
-  { code: 'KGS', name: 'Som Kirgistan', flag: '🇰🇬' },
-  { code: 'KHR', name: 'Riel Kamboja', flag: '🇰🇭' },
-  { code: 'KMF', name: 'Franc Komoro', flag: '🇰🇲' },
   { code: 'KRW', name: 'Won Korea Selatan', flag: '🇰🇷' },
-  { code: 'KWD', name: 'Dinar Kuwait', flag: '🇰🇼' },
-  { code: 'KZT', name: 'Tenge Kazakhstan', flag: '🇰🇿' },
-  { code: 'LAK', name: 'Kip Laos', flag: '🇱🇦' },
-  { code: 'LBP', name: 'Pound Lebanon', flag: '🇱🇧' },
-  { code: 'LKR', name: 'Rupee Sri Lanka', flag: '🇱🇰' },
-  { code: 'LRD', name: 'Dolar Liberia', flag: '🇱🇷' },
-  { code: 'LSL', name: 'Loti Lesotho', flag: '🇱🇸' },
-  { code: 'LYD', name: 'Dinar Libya', flag: '🇱🇾' },
-  { code: 'MAD', name: 'Dirham Maroko', flag: '🇲🇦' },
-  { code: 'MDL', name: 'Leu Moldova', flag: '🇲🇩' },
-  { code: 'MGA', name: 'Ariary Madagaskar', flag: '🇲🇬' },
-  { code: 'MKD', name: 'Denar Makedonia', flag: '🇲🇰' },
-  { code: 'MMK', name: 'Kyat Myanmar', flag: '🇲🇲' },
-  { code: 'MNT', name: 'Tugrik Mongolia', flag: '🇲🇳' },
-  { code: 'MOP', name: 'Pataca Makau', flag: '🇲🇴' },
-  { code: 'MRU', name: 'Ouguiya Mauritania', flag: '🇲🇷' },
-  { code: 'MUR', name: 'Rupee Mauritius', flag: '🇲🇺' },
-  { code: 'MVR', name: 'Rufiyaa Maladewa', flag: '🇲🇻' },
-  { code: 'MWK', name: 'Kwacha Malawi', flag: '🇲🇼' },
-  { code: 'MXN', name: 'Peso Meksiko', flag: '🇲🇽' },
   { code: 'MYR', name: 'Ringgit Malaysia', flag: '🇲🇾' },
-  { code: 'MZN', name: 'Metical Mozambik', flag: '🇲🇿' },
-  { code: 'NAD', name: 'Dolar Namibia', flag: '🇳🇦' },
-  { code: 'NGN', name: 'Naira Nigeria', flag: '🇳🇬' },
-  { code: 'NIO', name: 'Cordoba Nikaragua', flag: '🇳🇮' },
-  { code: 'NOK', name: 'Krone Norwegia', flag: '🇳🇴' },
-  { code: 'NPR', name: 'Rupee Nepal', flag: '🇳🇵' },
   { code: 'NZD', name: 'Dolar Selandia Baru', flag: '🇳🇿' },
-  { code: 'OMR', name: 'Rial Oman', flag: '🇴🇲' },
-  { code: 'PAB', name: 'Balboa Panama', flag: '🇵🇦' },
-  { code: 'PEN', name: 'Sol Peru', flag: '🇵🇪' },
-  { code: 'PGK', name: 'Kina Papua Ngn', flag: '🇵🇬' },
   { code: 'PHP', name: 'Peso Filipina', flag: '🇵🇭' },
-  { code: 'PKR', name: 'Rupee Pakistan', flag: '🇵🇰' },
-  { code: 'PLN', name: 'Zloty Polandia', flag: '🇵🇱' },
-  { code: 'PYG', name: 'Guarani Paraguay', flag: '🇵🇾' },
-  { code: 'QAR', name: 'Riyal Qatar', flag: '🇶🇦' },
-  { code: 'RON', name: 'Leu Rumania', flag: '🇷🇴' },
-  { code: 'RSD', name: 'Dinar Serbia', flag: '🇷🇸' },
   { code: 'RUB', name: 'Rubel Rusia', flag: '🇷🇺' },
-  { code: 'RWF', name: 'Franc Rwanda', flag: '🇷🇼' },
   { code: 'SAR', name: 'Riyal Arab Saudi', flag: '🇸🇦' },
-  { code: 'SBD', name: 'Dolar Kep. Solomon', flag: '🇸🇧' },
-  { code: 'SCR', name: 'Rupee Seychelles', flag: '🇸🇨' },
-  { code: 'SDG', name: 'Pound Sudan', flag: '🇸🇩' },
   { code: 'SEK', name: 'Krona Swedia', flag: '🇸🇪' },
   { code: 'SGD', name: 'Dolar Singapura', flag: '🇸🇬' },
-  { code: 'SHP', name: 'Pound St. Helena', flag: '🇸🇭' },
-  { code: 'SLL', name: 'Leone Sierra L', flag: '🇸🇱' },
-  { code: 'SOS', name: 'Shilling Somalia', flag: '🇸🇴' },
-  { code: 'SRD', name: 'Dolar Suriname', flag: '🇸🇷' },
-  { code: 'STN', name: 'Dobra Sao Tome', flag: '🇸🇹' },
-  { code: 'SYP', name: 'Pound Suriah', flag: '🇸🇾' },
-  { code: 'SZL', name: 'Lilangeni Eswatini', flag: '🇸🇿' },
   { code: 'THB', name: 'Baht Thailand', flag: '🇹🇭' },
-  { code: 'TJS', name: 'Somoni Tajikistan', flag: '🇹🇯' },
-  { code: 'TMT', name: 'Manat Turkmenistan', flag: '🇹🇲' },
-  { code: 'TND', name: 'Dinar Tunisia', flag: '🇹🇳' },
-  { code: 'TOP', name: 'Paʻanga Tonga', flag: '🇹🇴' },
   { code: 'TRY', name: 'Lira Turki', flag: '🇹🇷' },
-  { code: 'TTD', name: 'Dolar Trinidad', flag: '🇹🇹' },
-  { code: 'TWD', name: 'Dolar Baru Taiwan', flag: '🇹🇼' },
-  { code: 'TZS', name: 'Shilling Tanzania', flag: '🇹🇿' },
-  { code: 'UAH', name: 'Hryvnia Ukraina', flag: '🇺🇦' },
-  { code: 'UGX', name: 'Shilling Uganda', flag: '🇺🇬' },
-  { code: 'UYU', name: 'Peso Uruguay', flag: '🇺🇾' },
-  { code: 'UZS', name: 'Som Uzbekistan', flag: '🇺🇿' },
-  { code: 'VES', name: 'Bolivar Venezuela', flag: '🇻🇪' },
-  { code: 'VND', name: 'Dong Vietnam', flag: '🇻🇳' },
-  { code: 'VUV', name: 'Vatu Vanuatu', flag: '🇻🇺' },
-  { code: 'WST', name: 'Tala Samoa', flag: '🇼🇸' },
-  { code: 'XAF', name: 'Franc CFA AfTeng', flag: '🇨🇲' },
-  { code: 'XCD', name: 'Dolar Karibia Tmr', flag: '🇦🇬' },
-  { code: 'XOF', name: 'Franc CFA AfBar', flag: '🇸🇳' },
-  { code: 'XPF', name: 'Franc CFP', flag: '🇵🇫' },
-  { code: 'YER', name: 'Rial Yaman', flag: '🇾🇪' },
-  { code: 'ZAR', name: 'Rand Afrika Selatan', flag: '🇿🇦' },
-  { code: 'ZMW', name: 'Kwacha Zambia', flag: '🇿🇲' },
-  { code: 'ZWL', name: 'Dolar Zimbabwe', flag: '🇿🇼' }
+  { code: 'ZAR', name: 'Rand Afrika Selatan', flag: '🇿🇦' }
 ];
 
 async function initCalc() {
@@ -1287,7 +1163,6 @@ async function initCalc() {
         
         window.renderCalcDisplay();
     } catch (e) {
-        console.error("Gagal load rate", e);
         document.getElementById('calc-last-update').textContent = "Offline / Gagal Memuat";
     }
 }
@@ -1324,6 +1199,21 @@ window.swapCalcCurr = function() {
     window.renderCalcDisplay();
 }
 
+window.openCurrencySelector = function(rId) {
+    let html = '<div style="display:flex; flex-direction:column; gap:8px; max-height:60vh; overflow-y:auto; padding-bottom:12px; scrollbar-width:none;">';
+    calcCurrencies.forEach(c => {
+        let isActive = (rId === 'from' && calcFromCode === c.code) || (rId === 'to' && calcToCode === c.code);
+        html += `<button onclick="changeCalcCurr('${rId}', '${c.code}'); Swal.close();" style="background:${isActive?'var(--bg3)':'var(--bg2)'}; color:var(--text); border:1px solid ${isActive?'var(--gold)':'var(--border)'}; padding:14px; border-radius:12px; font-family:'Outfit'; text-align:left; font-size:14px; font-weight:600; display:flex; align-items:center; gap:12px;"><span style="font-size:20px;">${c.flag}</span> ${c.code} - ${c.name}</button>`;
+    });
+    html += '</div>';
+    Swal.fire({
+        title: '<div style="font-size:18px; text-align:left; font-weight:800; border-bottom:1px dashed var(--border); padding-bottom:12px; margin-bottom:8px;">Pilih Mata Uang</div>',
+        html: html, showConfirmButton: false, background: 'var(--card)', color: 'var(--text)',
+        position: window.innerWidth <= 768 ? 'bottom' : 'center', padding: '24px 16px', margin:0,
+        width: window.innerWidth <= 768 ? '100%' : '400px', customClass: { popup: 'rounded-bottom-sheet' }
+    });
+}
+
 window.calcPress = function(key) {
     if (navigator.vibrate) navigator.vibrate(20);
     
@@ -1350,30 +1240,20 @@ window.calcPress = function(key) {
 
 function renderRow(rId, code, isAct, displayVal) {
     let currObj = calcCurrencies.find(c => c.code === code) || {name:'', flag:''};
-    
     let countryCode = code.slice(0, 2).toLowerCase();
     if (code === 'EUR') countryCode = 'eu';
     if (code === 'GBP') countryCode = 'gb';
-    if (code === 'ANG') countryCode = 'cw';
-    if (code === 'XAF') countryCode = 'cm';
-    if (code === 'XOF') countryCode = 'sn';
-    if (code === 'XPF') countryCode = 'pf';
-    if (code === 'XCD') countryCode = 'ag';
 
     let flagImgHtml = `<img src="https://flagcdn.com/w40/${countryCode}.png" style="width:32px; height:22px; object-fit:cover; border-radius:4px; display:block; border:1px solid rgba(255,255,255,0.15);" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%23888899\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9\'></path></svg>';">`;
-
-    let optionsHtml = calcCurrencies.map(c => 
-        `<option value="${c.code}" ${c.code === code ? 'selected' : ''}>${c.flag} ${c.code} - ${c.name}</option>`
-    ).join('');
 
     return `
     <div class="calc-curr-item ${isAct ? 'active' : ''}" onclick="setCalcActiveRow('${rId}')">
         <div class="calc-left">
             <div class="calc-flag" style="width:40px; justify-content:center;">${flagImgHtml}</div>
             <div class="calc-code-wrap">
-                <select class="calc-select" onchange="changeCalcCurr('${rId}', this.value)" onclick="event.stopPropagation()">
-                    ${optionsHtml}
-                </select>
+                <div class="calc-select" onclick="event.stopPropagation(); openCurrencySelector('${rId}')" style="display:flex; align-items:center; gap:8px;">
+                    ${currObj.code} <span style="font-size:10px; color:var(--text3);">▼</span>
+                </div>
                 <div class="calc-name">${currObj.name}</div>
             </div>
         </div>
@@ -1423,7 +1303,6 @@ window.renderCalcDisplay = function() {
          } else toValStr = '...';
     }
 
-    // HIGH-PERFORMANCE DOM BUFFERING: Supaya focus dropdown aman / tidak menutup sendiri pas rate bergerak live tiap detik
     const cacheKey = `${calcFromCode}_${calcToCode}_${calcActiveRow}`;
     if (container.dataset.cacheKey !== cacheKey || !container.innerHTML.trim()) {
         container.innerHTML = 
@@ -1443,8 +1322,65 @@ window.renderCalcDisplay = function() {
 
 document.addEventListener('DOMContentLoaded', () => {
     initCalc();
+
+    // ================= FIX 3: DROPDOWN BOTTOM SHEET ELEGAN UNTUK SEMUA SELECT =================
+    const syncSelectUI = (sel, ui) => {
+        let text = sel.options[sel.selectedIndex]?.text;
+        if(!text && sel.options.length > 0) text = sel.options[0].text;
+        ui.querySelector('.sel-text').innerHTML = text || 'Pilih...';
+    };
+
+    document.querySelectorAll('select.f-input-dark, select.set-select').forEach(sel => {
+        sel.style.display = 'none';
+        let ui = document.createElement('div');
+        ui.className = sel.className;
+        ui.style.display = 'flex';
+        ui.style.justifyContent = 'space-between';
+        ui.style.alignItems = 'center';
+        ui.style.cursor = 'pointer';
+        ui.innerHTML = `<span class="sel-text" style="pointer-events:none; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:90%;"></span><span style="font-size:10px; color:var(--text3); pointer-events:none;">▼</span>`;
+        sel.parentNode.insertBefore(ui, sel);
+        
+        syncSelectUI(sel, ui);
+        sel.addEventListener('change', () => syncSelectUI(sel, ui));
+        
+        const observer = new MutationObserver(() => syncSelectUI(sel, ui));
+        observer.observe(sel, { childList: true, subtree: true });
+
+        ui.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (navigator.vibrate) navigator.vibrate(10);
+            let html = '<div style="display:flex; flex-direction:column; gap:8px; max-height:60vh; overflow-y:auto; padding-bottom:12px; scrollbar-width:none;">';
+            Array.from(sel.options).forEach((opt, idx) => {
+                if(!opt.value && opt.text.toLowerCase().includes('pilih')) return; 
+                let isSel = sel.value === opt.value;
+                html += `<button onclick="window.selectCustomOpt('${sel.id}', ${idx})" style="background:${isSel?'var(--bg3)':'var(--bg2)'}; color:var(--text); border:1px solid ${isSel?'var(--gold)':'var(--border)'}; padding:16px; border-radius:12px; font-family:'Outfit'; text-align:left; font-size:14px; font-weight:600; cursor:pointer; transition:0.2s;">${opt.innerHTML || opt.text}</button>`;
+            });
+            html += '</div>';
+            
+            Swal.fire({
+                title: '<div style="font-size:16px; text-align:left; font-weight:800; color:var(--text); border-bottom: 1px dashed var(--border); padding-bottom: 12px; margin-bottom: 8px;">Pilih Opsi</div>',
+                html: html, showConfirmButton: false, background: 'var(--card)', 
+                position: window.innerWidth <= 768 ? 'bottom' : 'center', 
+                padding: '24px 16px 16px 16px', margin:0, 
+                width: window.innerWidth <= 768 ? '100%' : '400px',
+                customClass: { popup: 'rounded-bottom-sheet' },
+                showClass: { popup: window.innerWidth <= 768 ? 'animate__animated animate__slideInUp' : '' },
+                hideClass: { popup: window.innerWidth <= 768 ? 'animate__animated animate__slideOutDown' : '' }
+            });
+        });
+    });
+    
+    window.selectCustomOpt = function(selId, optIdx) {
+        let sel = document.getElementById(selId);
+        if (sel) {
+            sel.selectedIndex = optIdx;
+            sel.dispatchEvent(new Event('change'));
+            if(sel.onchange) sel.onchange(); 
+        }
+        Swal.close();
+    };
 });
-// ===============================================================================
 
 function showErr(msg){ const el=document.getElementById('auth-err'); el.textContent=msg; el.style.display='block'; }
 function hideErr(){ document.getElementById('auth-err').style.display='none'; }
@@ -1501,8 +1437,11 @@ window.updatePrefCategories = function(resetCat = true) {
     if(CATS[selType]){
         CATS[selType].forEach(c => { let opt = document.createElement('option'); opt.value = c; opt.textContent = c; catDrop.appendChild(opt); });
     }
-    if(!resetCat && appPrefs.category) { setTimeout(() => catDrop.value = appPrefs.category, 50); }
-    if(!resetCat) { document.getElementById('pref-type').value = appPrefs.type || 'income'; document.getElementById('pref-wallet').value = appPrefs.wallet || 'Kas Tunai'; }
+    if(!resetCat && appPrefs.category) { setTimeout(() => {catDrop.value = appPrefs.category; catDrop.dispatchEvent(new Event('change'));}, 50); }
+    if(!resetCat) { 
+        document.getElementById('pref-type').value = appPrefs.type || 'income'; document.getElementById('pref-type').dispatchEvent(new Event('change'));
+        document.getElementById('pref-wallet').value = appPrefs.wallet || 'Kas Tunai'; document.getElementById('pref-wallet').dispatchEvent(new Event('change'));
+    }
 }
 
 window.savePreferences = function() {
@@ -1512,8 +1451,8 @@ window.savePreferences = function() {
     Swal.fire({position: 'center', icon: 'success', title: 'Tersimpan!', showConfirmButton: false, timer: 1500, background: 'var(--card)', color: 'var(--text)'});
     selType(appPrefs.type);
     setTimeout(() => {
-        if(document.getElementById('f-cat') && appPrefs.category) document.getElementById('f-cat').value = appPrefs.category;
-        if(document.getElementById('f-wallet') && appPrefs.wallet) document.getElementById('f-wallet').value = appPrefs.wallet;
+        if(document.getElementById('f-cat') && appPrefs.category) { document.getElementById('f-cat').value = appPrefs.category; document.getElementById('f-cat').dispatchEvent(new Event('change')); }
+        if(document.getElementById('f-wallet') && appPrefs.wallet) { document.getElementById('f-wallet').value = appPrefs.wallet; document.getElementById('f-wallet').dispatchEvent(new Event('change')); }
     }, 50);
 }
 
@@ -1615,7 +1554,10 @@ onAuthStateChanged(auth, async user => {
     if(savedExtraPrefs) {
         extraPrefs = JSON.parse(savedExtraPrefs);
         ['ext_autolock', 'ext_warnbalance', 'ext_shortnum', 'ext_budget', 'ext_hidezero', 'ext_walletpct', 'ext_debtbadge', 'ext_antiintip'].forEach(id => {
-            if(document.getElementById(id) && extraPrefs[id]) document.getElementById(id).value = extraPrefs[id];
+            if(document.getElementById(id) && extraPrefs[id]) {
+                document.getElementById(id).value = extraPrefs[id];
+                document.getElementById(id).dispatchEvent(new Event('change'));
+            }
         });
         if(extraPrefs.ext_antiintip === 'on') {
             document.body.classList.add('global-privacy');
@@ -1828,7 +1770,7 @@ window.addTx=async function(){
 
   if(!amt || (!cat && curType !== 'transfer') || isNaN(amt)){
     if(!amt || isNaN(amt)) { amountInput.classList.add('shake-error'); setTimeout(() => amountInput.classList.remove('shake-error'), 400); }
-    if(!cat && curType !== 'transfer') { catInput.classList.add('shake-error'); setTimeout(() => catInput.classList.remove('shake-error'), 400); }
+    if(!cat && curType !== 'transfer') { document.getElementById('f-cat').parentNode.previousSibling.classList.add('shake-error'); setTimeout(() => document.getElementById('f-cat').parentNode.previousSibling.classList.remove('shake-error'), 400); }
     return Swal.fire({
        position: 'center', icon: 'warning', title: 'Oops...', text: 'Isi nominal dan kategori!', 
        showConfirmButton: false, timer: 2000, background: 'var(--card)', color: 'var(--text)', backdrop: 'rgba(0,0,0,0.6)'
@@ -1891,8 +1833,8 @@ window.addTx=async function(){
         if(appPrefs && appPrefs.type) {
             selType(appPrefs.type);
             setTimeout(() => {
-                if(document.getElementById('f-cat') && appPrefs.category) document.getElementById('f-cat').value = appPrefs.category;
-                if(document.getElementById('f-wallet') && appPrefs.wallet) document.getElementById('f-wallet').value = appPrefs.wallet;
+                if(document.getElementById('f-cat') && appPrefs.category) { document.getElementById('f-cat').value = appPrefs.category; document.getElementById('f-cat').dispatchEvent(new Event('change')); }
+                if(document.getElementById('f-wallet') && appPrefs.wallet) { document.getElementById('f-wallet').value = appPrefs.wallet; document.getElementById('f-wallet').dispatchEvent(new Event('change')); }
             }, 50);
         } else {
             selType('income');
@@ -1913,9 +1855,9 @@ window.editTx=function(id){
   const t=txs.find(x=>x.id===id); if(!t)return; 
   editId=id; selType(t.type); 
   document.getElementById('f-amount').value=t.amount; 
-  setTimeout(()=>{ if(document.getElementById('f-cat')) document.getElementById('f-cat').value=t.category; },50); 
-  if(document.getElementById('f-wallet') && t.wallet) document.getElementById('f-wallet').value = t.wallet;
-  if(document.getElementById('f-wallet-to') && t.walletTo) document.getElementById('f-wallet-to').value = t.walletTo;
+  setTimeout(()=>{ if(document.getElementById('f-cat')) { document.getElementById('f-cat').value=t.category; document.getElementById('f-cat').dispatchEvent(new Event('change')); } },50); 
+  if(document.getElementById('f-wallet') && t.wallet) { document.getElementById('f-wallet').value = t.wallet; document.getElementById('f-wallet').dispatchEvent(new Event('change')); }
+  if(document.getElementById('f-wallet-to') && t.walletTo) { document.getElementById('f-wallet-to').value = t.walletTo; document.getElementById('f-wallet-to').dispatchEvent(new Event('change')); }
   document.getElementById('f-note').value=t.note==='-'?'':t.note; 
   document.getElementById('f-date').value=t.date; 
   document.getElementById('save-btn').textContent='UPDATE TRANSAKSI'; 
@@ -1936,6 +1878,7 @@ window.selType=function(t){
   if (s) {
       s.innerHTML='<option value="">Pilih kategori...</option>'; 
       if(CATS[t]){ CATS[t].forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;s.appendChild(o)}); }
+      s.dispatchEvent(new Event('change'));
   }
   
   const saveBtn = document.getElementById('save-btn');
@@ -2198,7 +2141,7 @@ function refreshAll(){
   if(activePage==='bulanan')renderMonthly(); 
   if(activePage==='tahunan')renderYearly(); 
   if(activePage==='riwayat')renderAll(); 
-  window.renderCalcDisplay(); // Pastikan kalkulator ikut refresh otomatis tiap kali rate WebSocket update!
+  window.renderCalcDisplay(); 
 }
 
 document.getElementById('pick-daily').value=nowISO().slice(0,10); document.getElementById('f-date').value=nowISO();
@@ -2688,6 +2631,16 @@ window.addEventListener('load', () => {
     }
   }, 3000); 
 });
+
+// ULTIMATE FIX: ANTI-STUCK TIMEOUT FALLBACK
+setTimeout(() => {
+    const splash = document.getElementById('splash-screen');
+    if (splash && !splash.classList.contains('splash-exit')) {
+      splash.classList.add('splash-exit');
+      setTimeout(() => splash.remove(), 800);
+    }
+}, 5000);
+
 </script>
 </body>
 </html>
