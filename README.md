@@ -2645,5 +2645,128 @@ setTimeout(() => {
 }, 5000);
 
 </script>
+
+<!-- =========================================================================
+     SCRIPT SINKRONISASI FIREBASE CLOUD (TAMBAEM MURNI)
+     ========================================================================= -->
+<script type="module">
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const auth = getAuth();
+const db = getFirestore();
+
+// 1. PUSH: Kirim pengaturan ke Cloud saat disave
+async function syncSettingsToCloud(uid) {
+    if (!uid) return;
+    const payload = {
+        theme: localStorage.getItem('theme') || 'dark',
+        appPrefs: JSON.parse(localStorage.getItem('rhn_prefs_' + uid) || '{}'),
+        extraPrefs: JSON.parse(localStorage.getItem('rhn_extra_prefs_v2_' + uid) || '{}')
+    };
+    try {
+        await setDoc(doc(db, 'users', uid, 'settings', 'preferences'), payload, { merge: true });
+    } catch (e) {
+        console.error("Gagal sinkronisasi preferensi ke Cloud:", e);
+    }
+}
+
+// 2. HIJACK: Dompleng fungsi bawaan tanpa mengotak-atik kodenya
+const originalSavePrefs = window.savePreferences;
+window.savePreferences = function() {
+    if (originalSavePrefs) originalSavePrefs();
+    if (auth.currentUser) syncSettingsToCloud(auth.currentUser.uid);
+};
+
+const originalSaveExtraPrefs = window.saveExtraPrefs;
+window.saveExtraPrefs = function() {
+    if (originalSaveExtraPrefs) originalSaveExtraPrefs();
+    if (auth.currentUser) syncSettingsToCloud(auth.currentUser.uid);
+};
+
+const originalToggleTheme = window.toggleTheme;
+window.toggleTheme = function() {
+    if (originalToggleTheme) originalToggleTheme();
+    if (auth.currentUser) syncSettingsToCloud(auth.currentUser.uid);
+};
+
+// 3. PULL: Tarik pengaturan dari Cloud otomatis saat buka di HP baru
+onAuthStateChanged(auth, async (user) => {
+    if (user) {
+        try {
+            const prefSnap = await getDoc(doc(db, 'users', user.uid, 'settings', 'preferences'));
+            if (prefSnap.exists()) {
+                const data = prefSnap.data();
+
+                // --- Terapkan Tema (Dark/Light) ---
+                if (data.theme) {
+                    localStorage.setItem('theme', data.theme);
+                    if (data.theme === 'light') {
+                        document.body.classList.add('light-mode');
+                        const btn = document.getElementById('theme-toggle');
+                        if(btn) btn.textContent = '☀️';
+                    } else {
+                        document.body.classList.remove('light-mode');
+                        const btn = document.getElementById('theme-toggle');
+                        if(btn) btn.textContent = '🌙';
+                    }
+                }
+
+                // --- Terapkan appPrefs (Form Transaksi Bawaan) ---
+                if (data.appPrefs && Object.keys(data.appPrefs).length > 0) {
+                    localStorage.setItem('rhn_prefs_' + user.uid, JSON.stringify(data.appPrefs));
+                    
+                    const prefType = document.getElementById('pref-type');
+                    if (prefType) prefType.value = data.appPrefs.type;
+                    
+                    if (window.selType) window.selType(data.appPrefs.type);
+                    
+                    setTimeout(() => {
+                        const fCat = document.getElementById('f-cat');
+                        if(fCat) {
+                            fCat.value = data.appPrefs.category;
+                            const uiSpan = fCat.previousElementSibling?.querySelector('.sel-text');
+                            if (uiSpan) uiSpan.innerHTML = data.appPrefs.category || 'Pilih...';
+                        }
+                        const fWallet = document.getElementById('f-wallet');
+                        if(fWallet) {
+                            fWallet.value = data.appPrefs.wallet;
+                            const uiSpan = fWallet.previousElementSibling?.querySelector('.sel-text');
+                            if (uiSpan) uiSpan.innerHTML = data.appPrefs.wallet || 'Kas Tunai';
+                        }
+                    }, 100);
+                }
+
+                // --- Terapkan extraPrefs (7 Fitur Sistem) ---
+                if (data.extraPrefs && Object.keys(data.extraPrefs).length > 0) {
+                    localStorage.setItem('rhn_extra_prefs_v2_' + user.uid, JSON.stringify(data.extraPrefs));
+                    
+                    ['ext_autolock', 'ext_warnbalance', 'ext_shortnum', 'ext_budget', 'ext_hidezero', 'ext_walletpct', 'ext_debtbadge', 'ext_antiintip'].forEach(id => {
+                        const el = document.getElementById(id);
+                        if(el && data.extraPrefs[id]) {
+                            el.value = data.extraPrefs[id];
+                            const uiSpan = el.previousElementSibling?.querySelector('.sel-text');
+                            if (uiSpan) {
+                                const opt = Array.from(el.options).find(o => o.value === data.extraPrefs[id]);
+                                if(opt) uiSpan.innerHTML = opt.innerHTML || opt.text;
+                            }
+                        }
+                    });
+
+                    if (data.extraPrefs.ext_antiintip === 'on') {
+                        document.body.classList.add('global-privacy');
+                    } else {
+                        document.body.classList.remove('global-privacy');
+                    }
+                    
+                    if (window.refreshAll) window.refreshAll();
+                }
+            }
+        } catch(e) {
+            console.error("Gagal menarik data dari Cloud:", e);
+        }
+    }
+});
+</script>
 </body>
 </html>
