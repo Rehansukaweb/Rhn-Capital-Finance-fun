@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="color-scheme" content="dark light">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=400, user-scalable=no, maximum-scale=1.0">
 <title>Arus Keuangan — RHN CAPITAL</title>
 
 <link rel="manifest" href="manifest.json">
@@ -17,6 +17,16 @@
    TEMA ORIGINAL (GELAP PEKAT) + TEKS NOMINAL PUTIH ELEGAN
    ========================================================================== */
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  overflow-x: hidden;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
 
 :root {
   --bg: #050505; 
@@ -68,8 +78,8 @@ body {
 /* FIX POP-UP MUNCUL DI BELAKANG LAYAR PIN */
 .swal2-container { z-index: 100000 !important; }
 
-/* FIX FULLSCREEN MODAL ELEGANT */
-.fullscreen-sheet { border-radius: 0 !important; min-height: 100vh !important; width: 100vw !important; margin: 0 !important; }
+/* FIX CENTERED MODAL ELEGANT */
+.centered-modal { border-radius: 24px !important; overflow: hidden; box-shadow: var(--shadow-float) !important; }
 
 /* TOP TEXT & EXTERNAL LINKS */
 .top-title {
@@ -753,13 +763,13 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
 
 <div id="page-pengaturan" class="page">
   
-  <div class="set-group" style="padding: 0; overflow: hidden; border-color: var(--border2);">
+    <div class="set-group" style="padding: 0; overflow: hidden; border-color: var(--border2);">
     <div class="set-title" style="padding: 16px 16px 8px 16px; margin: 0; border-bottom: none; font-size: 13px;">
       ⬅️ Kalkulator Mata Uang Online <span style="margin-left: 6px; font-size: 9px; background: var(--green2); color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 800;">LIVE REALTIME Ticker</span>
     </div>
     
     <div id="calc-display" style="display: flex; flex-direction: column; padding: 0 8px;">
-      </div>
+          </div>
     
     <div style="font-size: 9px; color: var(--text3); text-align: center; padding: 4px 0 8px 0;">
       Diperbarui pada <span id="calc-last-update">...</span>
@@ -787,6 +797,7 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
       </div>
     </div>
   </div>
+    
   <div class="set-group">
     <div class="set-title">🔒 KEAMANAN AKUN</div>
     <div class="set-item">
@@ -1194,7 +1205,7 @@ window.swapCalcCurr = function() {
 }
 
 window.openCurrencySelector = function(rId) {
-    let html = '<div style="display:flex; flex-direction:column; gap:8px; height:calc(100vh - 120px); overflow-y:auto; padding-bottom:12px; scrollbar-width:none;">';
+    let html = '<div style="display:flex; flex-direction:column; gap:8px; max-height:60vh; overflow-y:auto; padding-bottom:12px; scrollbar-width:none;">';
     calcCurrencies.forEach(c => {
         let isActive = (rId === 'from' && calcFromCode === c.code) || (rId === 'to' && calcToCode === c.code);
         html += `<button onclick="changeCalcCurr('${rId}', '${c.code}'); Swal.close();" style="background:${isActive?'var(--bg3)':'var(--bg2)'}; color:var(--text); border:1px solid ${isActive?'var(--gold)':'var(--border)'}; padding:14px; border-radius:12px; font-family:'Outfit'; text-align:left; font-size:14px; font-weight:600; display:flex; align-items:center; gap:12px;"><span style="font-size:20px;">${c.flag}</span> ${c.code} - ${c.name}</button>`;
@@ -1204,7 +1215,7 @@ window.openCurrencySelector = function(rId) {
         title: '<div style="font-size:18px; text-align:left; font-weight:800; border-bottom:1px dashed var(--border); padding-bottom:12px; margin-bottom:8px;">Pilih Mata Uang</div>',
         html: html, showConfirmButton: false, background: 'var(--card)', color: 'var(--text)',
         position: 'center', padding: '24px 16px', margin:0,
-        width: '100%', grow: 'fullscreen', customClass: { popup: 'fullscreen-sheet' }
+        width: window.innerWidth <= 768 ? '90%' : '400px', customClass: { popup: 'centered-modal' }
     });
 }
 
@@ -1344,7 +1355,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ui.addEventListener('click', (e) => {
             e.stopPropagation();
             if (navigator.vibrate) navigator.vibrate(10);
-            let html = '<div style="display:flex; flex-direction:column; gap:8px; height:calc(100vh - 120px); overflow-y:auto; padding-bottom:12px; scrollbar-width:none;">';
+            let html = '<div style="display:flex; flex-direction:column; gap:8px; max-height:60vh; overflow-y:auto; padding-bottom:12px; scrollbar-width:none;">';
             Array.from(sel.options).forEach((opt, idx) => {
                 if(!opt.value && opt.text.toLowerCase().includes('pilih')) return; 
                 let isSel = sel.value === opt.value;
@@ -1357,8 +1368,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 html: html, showConfirmButton: false, background: 'var(--card)', color: 'var(--text)',
                 position: 'center', 
                 padding: '24px 16px 16px 16px', margin:0, 
-                width: '100%', grow: 'fullscreen',
-                customClass: { popup: 'fullscreen-sheet' }
+                width: window.innerWidth <= 768 ? '90%' : '400px',
+                customClass: { popup: 'centered-modal' }
             });
         });
     });
@@ -1992,7 +2003,7 @@ const createTxCard = (t) => {
         <div class="ri-note">${escapeHTML(t.note)} <span class="cat-badge">${t.category}</span>${walletBadge}${debtWarn}</div>
         <div class="ri-meta">${fmtDate(t.date)} · ${fmtTime(t.date)}</div>
       </div>
-    </div>
+     </div>
     <div class="ri-right-wrap">
       <div class="ri-amounts-col">
         <div class="ri-amount ${t.type}">${sign}${fmtFull(t.amount)}</div>
