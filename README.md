@@ -3,7 +3,7 @@
 <meta charset="UTF-8">
 <meta name="color-scheme" content="dark light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Arus Keuangan | RHN CAPITAL</title>
+<title>Arus Keuangan — RHN CAPITAL</title>
 
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#050505">
@@ -88,7 +88,7 @@ body {
 
 /* HEADER */
 .header-area { padding: 20px 24px; }
-.logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; justify-content: center; /* Logo dan Teks di tengah jika diperlukan, tapi ini standar kiri, kita biarkan atau setel jika mau */ }
+.logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
 .logo-img { width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--gold2); padding: 2px; }
 .logo-img img { width: 100%; height: 100%; border-radius: 8px; object-fit: cover; }
 .logo-text .main-text { font-size: 18px; font-weight: 800; color: var(--text); letter-spacing: 0.5px; }
