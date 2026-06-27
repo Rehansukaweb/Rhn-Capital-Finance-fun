@@ -3,7 +3,7 @@
 <meta charset="UTF-8">
 <meta name="color-scheme" content="dark light">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Arus Keuangan — RHN CAPITAL</title>
+<title>Arus Keuangan | RHN CAPITAL</title>
 
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#050505">
@@ -69,14 +69,8 @@ body {
 .centered-modal { border-radius: 24px !important; overflow: hidden; box-shadow: var(--shadow-float) !important; }
 
 /* TOP TEXT & EXTERNAL LINKS */
-.top-title {
-  color: var(--blue-title); font-size: 22px; font-weight: 800;
-  padding: 16px 24px 8px; letter-spacing: -0.5px;
-  text-align: center; /* Diubah ke tengah */
-}
 .top-ext-links {
-  display: flex; gap: 16px; padding: 0 24px 16px;
-  border-bottom: 1px solid var(--border);
+  display: flex; gap: 16px; padding: 16px 24px 16px;
   flex-wrap: wrap; align-items: center; justify-content: center; /* Diubah ke tengah */
 }
 .nav-ext-btn {
@@ -88,7 +82,7 @@ body {
 
 /* HEADER */
 .header-area { padding: 20px 24px; }
-.logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.logo-row { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; justify-content: center; /* Logo dan Teks di tengah jika diperlukan, tapi ini standar kiri, kita biarkan atau setel jika mau */ }
 .logo-img { width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--gold2); padding: 2px; }
 .logo-img img { width: 100%; height: 100%; border-radius: 8px; object-fit: cover; }
 .logo-text .main-text { font-size: 18px; font-weight: 800; color: var(--text); letter-spacing: 0.5px; }
@@ -304,7 +298,7 @@ select.f-input-dark option { background: var(--bg2); color: var(--text); font-we
    MOBILE RESPONSIVE
    ========================================================================== */
 @media (max-width: 768px) {
-  .top-ext-links { justify-content: center; padding: 0 16px 16px; }
+  .top-ext-links { justify-content: center; padding: 16px; }
   .header-area { padding: 16px; }
   .status-row { flex-direction: row; }
   .status-pill { flex: 1; }
@@ -351,7 +345,7 @@ select.f-input-dark option { background: var(--bg2); color: var(--text); font-we
   .wallet-scroll { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; padding-bottom: 0; }
   .w-card { min-width: 0; }
   .panel { display: grid; grid-template-columns: 380px 1fr; gap: 24px; align-items: start; }
-  .main, .header-area, .nav, .top-ext-links, .top-title { max-width: 1200px; margin: 0 auto; }
+  .main, .header-area, .nav, .top-ext-links { max-width: 1200px; margin: 0 auto; }
 }
 
 /* STYLING HUTANG PIUTANG & DOMPET */
@@ -460,7 +454,6 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
   ⚠️ Koneksi Terputus - Mode Offline Aktif
 </div>
 
-<div class="top-title">RHN CAPITAL</div>
 <div class="top-ext-links">
   <button class="nav-ext-btn" onclick="window.location.href='latar.html'">📈 HALAMAN RHN CAPITAL ↗</button>
   <button class="nav-ext-btn" onclick="window.location.href='jurnal.html'">📈 JURNAL FOREX ↗</button>
@@ -468,7 +461,6 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
   <button class="nav-ext-btn" onclick="window.location.href='data.html'">📈 DATA PRIBADI ↗</button>
 </div>
 
-<!-- LAYAR OTENTIKASI (DENGAN GOOGLE) -->
 <div id="auth-screen">
   <div class="auth-box">
     <img src="RHN LOGO.jpg" alt="RHN Capital Logo">
@@ -569,7 +561,6 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
 
 <div class="main">
 
-<!-- DASHBOARD -->
 <div id="page-dashboard" class="page active">
   <div class="metrics" id="metric-cards"></div>
   <div id="wallet-balances" class="wallet-scroll"></div>
@@ -649,7 +640,6 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
   </div>
 </div>
 
-<!-- PAGES -->
 <div id="page-harian" class="page">
   <div class="sum-grid" id="daily-sum"></div>
   <div class="card">
@@ -737,7 +727,6 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
 
 <div id="page-pengaturan" class="page">
   
-  <!-- KALKULATOR MATA UANG ONLINE -->
   <div class="set-group" style="padding: 0; overflow: hidden; border-color: var(--border2);">
     <div class="set-title" style="padding: 16px 16px 8px 16px; margin: 0; border-bottom: none; font-size: 13px;">
       ⬅️ Kalkulator Mata Uang Online <span style="margin-left: 6px; font-size: 9px; background: var(--green2); color: #000; padding: 2px 6px; border-radius: 4px; font-weight: 800;">LIVE REALTIME Ticker</span>
