@@ -2,7 +2,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="color-scheme" content="dark light">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, shrink-to-fit=no">
 <title>Arus Keuangan | RHN CAPITAL</title>
 
 <link rel="manifest" href="manifest.json">
@@ -16,7 +16,7 @@
 /* ==========================================================================
    TEMA ORIGINAL (GELAP PEKAT) + TEKS NOMINAL PUTIH ELEGAN
    ========================================================================== */
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: none; text-size-adjust: none; }
 
 /* FIX: Menyembunyikan judul otomatis (tulisan biru & garis) bawaan GitHub Pages */
 h1, hr, .page-header, .site-header, .project-name { display: none !important; }
@@ -298,27 +298,9 @@ select.f-input-dark option { background: var(--bg2); color: var(--text); font-we
 .btn-google { background: #fff !important; color: #000 !important; border: 1px solid #ddd !important; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 12px; }
 
 /* ==========================================================================
-   MOBILE RESPONSIVE (DISEMPURNAKAN AGAR PROPOSIONAL DI SEMUA UKURAN HP)
+   MOBILE RESPONSIVE
    ========================================================================== */
 @media (max-width: 768px) {
-  /* FONT SCALING OTOMATIS: clamp(min-size, responsive-size, max-size) */
-  .m-val { font-size: clamp(13px, 4.5vw, 18px) !important; }
-  .m-label { font-size: clamp(8px, 2.5vw, 10px) !important; }
-  .m-sub { font-size: clamp(9px, 2.5vw, 11px) !important; }
-  
-  .w-val { font-size: clamp(10px, 3.5vw, 13px) !important; }
-  .w-label { font-size: clamp(7.5px, 2.5vw, 9px) !important; }
-  
-  .ri-amount { font-size: clamp(13px, 4vw, 16px) !important; }
-  .ri-note { font-size: clamp(12px, 3.5vw, 14px) !important; }
-  
-  #f-amount { font-size: clamp(18px, 6vw, 24px) !important; padding: 20px 16px !important; }
-  .f-input-dark { font-size: clamp(13px, 4vw, 15px) !important; padding: 16px 14px !important; }
-  
-  .nav-btn { font-size: clamp(9px, 3vw, 11px); padding: 8px 16px; }
-  .t-btn { font-size: clamp(10px, 3vw, 12px) !important; padding: 10px 4px !important; }
-
-  /* LAYOUT & MARGIN SPACING */
   .top-ext-links { justify-content: center; padding: 0 0 16px 0; }
   .header-area { padding: 16px; }
   .status-row { flex-direction: row; }
@@ -345,9 +327,9 @@ select.f-input-dark option { background: var(--bg2); color: var(--text); font-we
   .filter-bar { flex-direction: column; } 
   .export-btn { width: 100%; text-align: center; border-radius: 16px; padding: 18px 16px; }
   
-  .type-toggle { width: calc(100% - 32px) !important; margin-left: 16px !important; margin-right: 16px !important; }
-  .submit-btn { width: calc(100% - 32px) !important; margin-left: 16px !important; margin-right: 16px !important; }
+  .type-toggle, .submit-btn { width: calc(100% - 32px) !important; margin-left: 16px !important; margin-right: 16px !important; }
   .filter-bar select.f-input-dark, .filter-bar input.f-input-dark { width: 100%; border-radius: 16px; }
+  .f-input-dark { padding: 18px 16px; font-size: 15px; border-radius: 16px; }
   
   .list-wrap { padding: 0 !important; margin: 0 !important; width: 100%; }
   .recent-item { width: 100% !important; margin: 0 0 12px 0 !important; padding: 16px 16px !important; border-radius: 24px !important; border-left: none !important; border-right: none !important; background: var(--card); flex-direction: row; justify-content: space-between; align-items: center; }
@@ -2994,7 +2976,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
       const balCard = e.target.closest('.m-card.bal'); 
       if(balCard) { 
           document.body.classList.toggle('global-privacy'); 
-          if(navigator.vibrate) navigator.vibrate(15); 
+          if(navigator.vibrate) vibrate(15); 
       } 
   });
 
