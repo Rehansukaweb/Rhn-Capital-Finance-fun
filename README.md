@@ -375,7 +375,7 @@ select.f-input-dark option { background: var(--bg2); color: var(--text); font-we
   .panel { display: grid; grid-template-columns: 380px 1fr; gap: 24px; align-items: start; }
   .main, .header-area, .nav { max-width: 1200px; margin: 0 auto; }
   
-  /* Rata Tengah Khusus Laptop untuk Info USD, XAU, & Tersinkron */
+  /* PERBAIKAN: Rata Tengah Khusus Laptop untuk Info USD, XAU, & Tersinkron */
   .status-row { 
       justify-content: center; 
       align-items: center; 
@@ -400,180 +400,132 @@ select.f-input-dark option { background: var(--bg2); color: var(--text); font-we
 
 body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, body.hide-usd .usd-status-pill { display: none !important; }
 
-/* =========================================
-   SPLASH SCREEN V5 ULTRA GOD MODE
-========================================= */
-#splash-v5 {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #050510;
-  z-index: 999999;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  transition: opacity 0.8s ease, visibility 0.8s ease;
+/* ==========================================================================
+   🌟 SPLASH SCREEN V6: GLASSMORPHISM & CLEAN TECH (ROMBAK TOTAL)
+   Fokus pada kemewahan, profesional, dan loading bar yang responsif.
+   ========================================================================== */
+#splash-screen {
+  position: fixed; inset: 0; background: #050505; z-index: 999999;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
 }
 
-/* Animasi Latar Belakang Bergerak */
-.splash-glow-1-v5, .splash-glow-2-v5 {
-  position: absolute;
-  width: 400px;
-  height: 400px;
-  border-radius: 50%;
-  filter: blur(100px);
-  opacity: 0.5;
-  animation: floatBg-v5 8s infinite alternate ease-in-out;
+/* Background Tech Grid Bergerak */
+.splash-bg-grid {
+  position: absolute; inset: 0;
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgba(251, 191, 36, 0.03) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(251, 191, 36, 0.03) 1px, transparent 1px);
+  animation: gridMove 10s linear infinite;
 }
-.splash-glow-1-v5 {
-  background: #00f2fe; 
-  top: -100px;
-  left: -100px;
-}
-.splash-glow-2-v5 {
-  background: #4facfe; 
-  bottom: -100px;
-  right: -100px;
-  animation-delay: -4s;
+@keyframes gridMove {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(40px); }
 }
 
-/* Kaca Buram (Glassmorphism) */
-.splash-content-v5 {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.03);
-  padding: 50px 70px;
-  border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-  animation: contentIntro-v5 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+/* Animasi Exit Splash */
+#splash-screen.splash-exit {
+  animation: exitSplash 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes exitSplash {
+  0% { opacity: 1; transform: scale(1); filter: blur(0); }
+  100% { opacity: 0; transform: scale(1.05); filter: blur(10px); visibility: hidden; }
 }
 
-/* Logo Melayang dan Berputar 3D */
-.splash-logo-box-v5 {
-  width: 100px;
-  height: 100px;
-  margin: 0 auto 20px;
-  background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%);
-  border-radius: 25px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 50px;
-  box-shadow: 0 10px 30px rgba(0, 242, 254, 0.4);
-  animation: logoFloat-v5 3s infinite ease-in-out, logoIntro-v5 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+/* Panel Kaca Utama (Glassmorphism) */
+.splash-glass-panel {
+  position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center;
+  padding: 40px 60px; background: rgba(18, 18, 21, 0.6);
+  border: 1px solid rgba(251, 191, 36, 0.1); border-radius: 32px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(12px);
+  transform: translateY(20px); opacity: 0;
+  animation: panelUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.2s;
+}
+@keyframes panelUp {
+  to { transform: translateY(0); opacity: 1; }
 }
 
-.splash-title-v5 {
-  color: #ffffff;
-  font-family: 'Outfit', sans-serif;
-  font-size: 24px;
-  font-weight: 800;
-  letter-spacing: 4px;
-  margin-bottom: 30px;
-  text-shadow: 0 0 20px rgba(255,255,255,0.2);
-  opacity: 0;
-  display: block !important; /* Override the global h1 hiding */
-  animation: textFadeUp-v5 0.8s ease 0.5s forwards;
+/* Logo Flip 3D */
+.splash-logo-container { position: relative; margin-bottom: 24px; }
+.splash-img-new {
+  width: 80px; height: 80px; border-radius: 20px;
+  border: 2px solid rgba(251, 191, 36, 0.8); padding: 4px;
+  opacity: 0; transform: scale(0.8) rotate(-10deg);
+  animation: logoFlip 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.5s;
+}
+@keyframes logoFlip {
+  to { opacity: 1; transform: scale(1) rotate(0deg); }
 }
 
-/* Loading Bar Super Mulus */
-.splash-loader-wrapper-v5 {
-  width: 100%;
-  height: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  overflow: hidden;
-  position: relative;
-  opacity: 0;
-  animation: textFadeUp-v5 0.8s ease 0.7s forwards;
+/* Pendaran (Glow) di belakang logo */
+.splash-glow {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 100px; height: 100px; background: rgba(251, 191, 36, 0.4);
+  border-radius: 50%; filter: blur(20px); opacity: 0; z-index: -1;
+  animation: pulseGlowNew 2s infinite alternate 1s;
+}
+@keyframes pulseGlowNew {
+  from { opacity: 0.3; transform: translate(-50%, -50%) scale(0.8); }
+  to { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); }
 }
 
-.splash-loader-fill-v5 {
-  height: 100%;
-  width: 0%;
-  background: linear-gradient(90deg, #00f2fe, #4facfe, #00f2fe);
-  background-size: 200% 100%;
-  border-radius: 10px;
-  animation: loadingProgress-v5 3.5s cubic-bezier(0.8, 0, 0.2, 1) forwards, shimmerBar-v5 2s infinite linear;
+/* Teks Menyapu Ke Atas (Slide Up Mask) */
+.splash-text-mask { overflow: hidden; padding-bottom: 4px; margin-bottom: 8px; }
+.splash-title-new {
+  font-size: 32px; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;
+  letter-spacing: 4px; transform: translateY(100%);
+  background: linear-gradient(90deg, #fff 0%, var(--gold) 50%, #fff 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  animation: textSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.8s;
 }
+@keyframes textSlideUp { to { transform: translateY(0); } }
 
-#splash-status-v5 {
-  color: #8892b0;
-  font-size: 13px;
-  margin-top: 15px;
-  letter-spacing: 1px;
-  opacity: 0;
-  animation: textFadeUp-v5 0.8s ease 0.9s forwards;
+/* Subtitle Muncul Perlahan */
+.splash-subtitle-new {
+  font-size: 12px; font-weight: 700; color: var(--gold); letter-spacing: 6px;
+  opacity: 0; text-transform: uppercase;
+  animation: fadeSub 0.8s ease forwards 1.2s;
 }
+@keyframes fadeSub { to { opacity: 1; } }
 
-/* --- KEYFRAMES --- */
-@keyframes floatBg-v5 {
-  0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(50px, 50px) scale(1.2); }
+/* Loading Bar Pintar */
+.splash-loader {
+  width: 100%; height: 3px; background: rgba(255,255,255,0.1);
+  border-radius: 4px; margin-top: 30px; overflow: hidden; position: relative;
 }
-@keyframes contentIntro-v5 {
-  0% { opacity: 0; transform: translateY(40px) scale(0.9); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
+.splash-loader-bar {
+  position: absolute; top: 0; left: 0; height: 100%; background: var(--gold);
+  width: 0%; border-radius: 4px;
+  animation: loadBar 2s cubic-bezier(0.7, 0, 0.3, 1) forwards 0.5s;
 }
-@keyframes logoIntro-v5 {
-  0% { opacity: 0; transform: rotateX(-90deg) scale(0.5); }
-  100% { opacity: 1; transform: rotateX(0deg) scale(1); }
-}
-@keyframes logoFloat-v5 {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-15px) rotate(3deg); }
-}
-@keyframes textFadeUp-v5 {
-  0% { opacity: 0; transform: translateY(15px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-@keyframes loadingProgress-v5 {
+@keyframes loadBar {
   0% { width: 0%; }
-  30% { width: 45%; }
-  70% { width: 80%; }
+  50% { width: 70%; }
   100% { width: 100%; }
 }
-@keyframes shimmerBar-v5 {
-  0% { background-position: 100% 0; }
-  100% { background-position: -100% 0; }
-}
 
-/* Animasi Keluar Ala Layar Bioskop / Warp Speed */
-.splash-warp-exit-v5 {
-  animation: warpExit-v5 0.6s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards !important;
-  pointer-events: none;
-}
-@keyframes warpExit-v5 {
-  0% { transform: scale(1); opacity: 1; filter: blur(0px); }
-  100% { transform: scale(3); opacity: 0; filter: blur(20px); visibility: hidden; }
-}
 </style>
 </head>
 <body>
 
-<div id="splash-v5">
-  <div class="splash-glow-1-v5"></div>
-  <div class="splash-glow-2-v5"></div>
-  
-  <div class="splash-content-v5">
-    <div class="splash-logo-box-v5">
-      <img src="RHN LOGO.jpg" alt="RHN Capital Logo" style="width: 100%; height: 100%; border-radius: inherit; object-fit: cover; padding: 2px; background: #050510;">
+<!-- HTML SPLASH SCREEN V6 -->
+<div id="splash-screen">
+  <div class="splash-bg-grid"></div>
+  <div class="splash-glass-panel">
+    <div class="splash-logo-container">
+      <img src="RHN LOGO.jpg" alt="RHN Capital Logo" class="splash-img-new">
+      <div class="splash-glow"></div>
     </div>
-    <h1 class="splash-title-v5">RHN CAPITAL</h1>
-    
-    <div class="splash-loader-wrapper-v5">
-      <div class="splash-loader-fill-v5"></div>
+    <div class="splash-text-mask">
+      <div class="splash-title-new">RHN CAPITAL</div>
     </div>
-    <p id="splash-status-v5">Menyiapkan Enkripsi Data...</p>
+    <div class="splash-subtitle-new">ARUS KEUANGAN</div>
+    <div class="splash-loader">
+      <div class="splash-loader-bar"></div>
+    </div>
   </div>
 </div>
+<!-- AKHIR HTML SPLASH SCREEN -->
 
 <div id="offline-banner" style="display:none; background:#F87171; color:#000; text-align:center; padding:10px; font-size:12px; font-weight:800; position:fixed; top:0; left:0; width:100%; z-index:100000; text-transform:uppercase; box-shadow:0 4px 12px rgba(0,0,0,0.5);">
   ⚠️ Koneksi Terputus - Mode Offline Aktif
@@ -3379,17 +3331,20 @@ window.addEventListener('DOMContentLoaded', (event) => {
   }, 1000);
 });
 
-// SCRIPT SPLASH SCREEN V5 ULTRA GOD MODE
+// SCRIPT SPLASH SCREEN V6 (AUTO HILANG)
 window.addEventListener('DOMContentLoaded', () => {
-  const splashScreen = document.getElementById("splash-v5");
-  const splashStatus = document.getElementById("splash-status-v5");
-
-  setTimeout(() => { if(splashStatus) splashStatus.innerText = "Mengambil Data Harga XAU/USD..."; }, 1000);
-  setTimeout(() => { if(splashStatus) splashStatus.innerText = "Sinkronisasi Modul Finansial..."; }, 2000);
-  setTimeout(() => { if(splashStatus) { splashStatus.innerText = "Sistem Siap!"; splashStatus.style.color = "#00f2fe"; } }, 3000);
-
-  setTimeout(() => { if(splashScreen) splashScreen.classList.add("splash-warp-exit-v5"); }, 3600);
-  setTimeout(() => { if(splashScreen) splashScreen.remove(); }, 4200);
+  // Animasi Splash Screen V6 akan otomatis fade out dan hilang
+  // Tepat saat loading bar penuh (sekitar 2.5 - 3 detik)
+  setTimeout(() => { 
+      const splash = document.getElementById('splash-screen'); 
+      if (splash) { 
+          splash.classList.add('splash-exit'); 
+          setTimeout(() => {
+              splash.style.display = 'none'; 
+              splash.remove(); 
+          }, 600); // 600ms durasi fade out dari keyframe
+      } 
+  }, 3000); 
 });
 </script>
 </body>
