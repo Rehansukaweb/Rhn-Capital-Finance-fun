@@ -401,8 +401,7 @@ select.f-input-dark option { background: var(--bg2); color: var(--text); font-we
 body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, body.hide-usd .usd-status-pill { display: none !important; }
 
 /* ==========================================================================
-   🌟 SPLASH SCREEN V6: GLASSMORPHISM & CLEAN TECH (ROMBAK TOTAL)
-   Fokus pada kemewahan, profesional, dan loading bar yang responsif.
+   🌟 SPLASH SCREEN V6: GLASSMORPHISM & TEKS TENGAH (ROMBAK TOTAL)
    ========================================================================== */
 #splash-screen {
   position: fixed; inset: 0; background: #050505; z-index: 999999;
@@ -431,13 +430,13 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
   100% { opacity: 0; transform: scale(1.05); filter: blur(10px); visibility: hidden; }
 }
 
-/* Panel Kaca Utama (Glassmorphism) */
+/* Panel Kaca Utama (Glassmorphism) - Dibuat Center Total */
 .splash-glass-panel {
-  position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center;
+  position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center;
   padding: 40px 60px; background: rgba(18, 18, 21, 0.6);
   border: 1px solid rgba(251, 191, 36, 0.1); border-radius: 32px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px); text-align: center;
   transform: translateY(20px); opacity: 0;
   animation: panelUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.2s;
 }
@@ -445,16 +444,16 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
   to { transform: translateY(0); opacity: 1; }
 }
 
-/* Logo Flip 3D */
+/* Logo Animasi */
 .splash-logo-container { position: relative; margin-bottom: 24px; }
 .splash-img-new {
   width: 80px; height: 80px; border-radius: 20px;
   border: 2px solid rgba(251, 191, 36, 0.8); padding: 4px;
-  opacity: 0; transform: scale(0.8) rotate(-10deg);
-  animation: logoFlip 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.5s;
+  opacity: 0; transform: scale(0.8);
+  animation: logoFlipSimple 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.5s;
 }
-@keyframes logoFlip {
-  to { opacity: 1; transform: scale(1) rotate(0deg); }
+@keyframes logoFlipSimple {
+  to { opacity: 1; transform: scale(1); }
 }
 
 /* Pendaran (Glow) di belakang logo */
@@ -469,21 +468,22 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
   to { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); }
 }
 
-/* Teks Menyapu Ke Atas (Slide Up Mask) */
-.splash-text-mask { overflow: hidden; padding-bottom: 4px; margin-bottom: 8px; }
+/* Teks Utama (RHN CAPITAL) Dibuat Center & Scale Animasi */
+.splash-text-mask { display: flex; justify-content: center; width: 100%; padding-bottom: 4px; margin-bottom: 8px; }
 .splash-title-new {
   font-size: 32px; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;
-  letter-spacing: 4px; transform: translateY(100%);
+  letter-spacing: 4px; text-align: center;
   background: linear-gradient(90deg, #fff 0%, var(--gold) 50%, #fff 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  animation: textSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.8s;
+  opacity: 0; transform: scale(0.9);
+  animation: titleFadeScale 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.8s;
 }
-@keyframes textSlideUp { to { transform: translateY(0); } }
+@keyframes titleFadeScale { to { opacity: 1; transform: scale(1); } }
 
-/* Subtitle Muncul Perlahan */
+/* Subtitle (ARUS KEUANGAN) Tengah */
 .splash-subtitle-new {
   font-size: 12px; font-weight: 700; color: var(--gold); letter-spacing: 6px;
-  opacity: 0; text-transform: uppercase;
+  opacity: 0; text-transform: uppercase; text-align: center; width: 100%;
   animation: fadeSub 0.8s ease forwards 1.2s;
 }
 @keyframes fadeSub { to { opacity: 1; } }
@@ -508,7 +508,7 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
 </head>
 <body>
 
-<!-- HTML SPLASH SCREEN V6 -->
+<!-- HTML SPLASH SCREEN V6 (TELAH DISESUAIKAN) -->
 <div id="splash-screen">
   <div class="splash-bg-grid"></div>
   <div class="splash-glass-panel">
@@ -552,6 +552,23 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>
       MASUK DENGAN GOOGLE
     </button>
+
+    <!-- TAMBAHAN: UI LOGIN NOMOR HP -->
+    <div style="margin-top: 24px; border-top: 1px dashed var(--border); padding-top: 16px;">
+      <div class="auth-sub" style="margin-bottom: 12px; color: var(--gold);">Atau Masuk dengan Nomor HP</div>
+      
+      <div class="form-row" id="field-phone">
+        <input type="tel" id="auth-phone" class="f-input-dark" placeholder="Mulai dengan +62..." style="margin-bottom: 12px;">
+        <div id="recaptcha-container" style="margin-bottom: 12px; display: flex; justify-content: center;"></div>
+        <button class="auth-btn" id="btn-send-otp" onclick="sendOTP()" style="background: var(--bg2); color: var(--gold); border: 1px solid var(--gold);">KIRIM KODE OTP</button>
+      </div>
+
+      <div class="form-row" id="field-otp" style="display: none;">
+        <input type="text" id="auth-otp" class="f-input-dark" placeholder="Masukkan 6 Digit OTP" style="margin-bottom: 12px; text-align: center; letter-spacing: 6px; font-size: 18px;" maxlength="6">
+        <button class="auth-btn" id="btn-verify-otp" onclick="verifyOTP()" style="background: var(--gold); color: #000;">VERIFIKASI OTP</button>
+      </div>
+    </div>
+    <!-- AKHIR TAMBAHAN -->
 
     <button style="background:transparent; border:none; color:var(--text3); font-size:10px; margin-top:16px; cursor:pointer; font-weight:700; text-transform:uppercase; text-decoration:underline; width:100%;" onclick="doResetPassword()" id="btn-forgot">Lupa Sandi?</button>
     <div style="font-size: 10px; color: var(--gold); margin-top: 6px; text-align: center;">Cek folder SPAM jika email reset tidak masuk</div>
@@ -1044,7 +1061,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { 
   getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, 
   signOut, onAuthStateChanged, sendPasswordResetEmail, 
-  GoogleAuthProvider, signInWithPopup 
+  GoogleAuthProvider, signInWithPopup, RecaptchaVerifier, signInWithPhoneNumber
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { 
   initializeFirestore, persistentLocalCache, collection, doc, 
@@ -1486,6 +1503,74 @@ window.doGoogleAuth = async function() {
         setLoading(false); 
     }
 };
+
+// TAMBAHAN: FUNGSI FIREBASE PHONE AUTH
+window.confirmationResult = null;
+
+window.initRecaptcha = function() {
+  if (!window.recaptchaVerifier) {
+    window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+      'size': 'normal',
+      'callback': (response) => {
+        // reCAPTCHA berhasil dilewati
+      },
+      'expired-callback': () => {
+        showErr('Sistem keamanan kedaluwarsa, silakan refresh halaman.');
+      }
+    });
+  }
+}
+
+window.sendOTP = async function() {
+  const phoneNumber = document.getElementById('auth-phone').value.trim();
+  hideErr();
+
+  if (!phoneNumber.startsWith('+')) {
+    return showErr('Gunakan kode negara (contoh: +628123456789).');
+  }
+
+  setLoading(true);
+  document.getElementById('btn-send-otp').textContent = 'MENGIRIM...';
+
+  try {
+    window.initRecaptcha();
+    const appVerifier = window.recaptchaVerifier;
+    window.confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
+    
+    document.getElementById('field-phone').style.display = 'none';
+    document.getElementById('field-otp').style.display = 'block';
+    showErr(''); 
+  } catch (error) {
+    showErr(error.message);
+    if (window.recaptchaVerifier) {
+        window.recaptchaVerifier.render().then(function(widgetId) {
+          grecaptcha.reset(widgetId);
+        });
+    }
+  }
+  setLoading(false);
+  document.getElementById('btn-send-otp').textContent = 'KIRIM KODE OTP';
+};
+
+window.verifyOTP = async function() {
+  const code = document.getElementById('auth-otp').value.trim();
+  hideErr();
+
+  if (code.length !== 6) return showErr('Masukkan 6 digit kode OTP.');
+
+  setLoading(true);
+  document.getElementById('btn-verify-otp').textContent = 'MEMVERIFIKASI...';
+
+  try {
+    await window.confirmationResult.confirm(code);
+    // Jika berhasil, 'onAuthStateChanged' aslimu akan otomatis mengambil alih dan membuka aplikasi.
+  } catch (error) {
+    showErr('OTP Salah atau kedaluwarsa.');
+  }
+  setLoading(false);
+  document.getElementById('btn-verify-otp').textContent = 'VERIFIKASI OTP';
+};
+// AKHIR TAMBAHAN
 
 window.doAuth = async function() { 
     const email = document.getElementById('auth-email').value.trim();
