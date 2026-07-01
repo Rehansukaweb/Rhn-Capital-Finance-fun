@@ -15,10 +15,6 @@
 
 <script>
   window.addEventListener('DOMContentLoaded', function() {
-    // Menghapus bersih elemen injeksi GitHub Pages dari akar HTML agar layout tidak jelek
-    const ghElements = document.querySelectorAll('header.site-header, .page-header, h1.project-name, hr');
-    ghElements.forEach(el => el.remove());
-
     var testEl = document.createElement('div');
     testEl.style.cssText = 'font-size: 100px; position: absolute; visibility: hidden; z-index: -999;';
     document.body.appendChild(testEl);
@@ -38,6 +34,8 @@
    TEMA ORIGINAL (GELAP PEKAT) + TEKS NOMINAL PUTIH ELEGAN
    ========================================================================== */
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: none; text-size-adjust: none; }
+
+h1, hr, .page-header, .site-header, .project-name { display: none !important; }
 
 :root {
   --bg: #050505; 
@@ -211,6 +209,7 @@ body {
 .f-input-dark:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.15); }
 .f-input-dark::placeholder { color: var(--text3); }
 
+/* Menghilangkan panah (spinner) pada input number di seluruh browser */
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
@@ -540,50 +539,25 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
     <img src="RHN LOGO.jpg" alt="RHN Capital Logo">
     <div class="auth-title">RHN CAPITAL</div>
     <div class="auth-sub">Arus Keuangan Akses Masuk</div>
-    
     <div class="auth-tabs">
       <button class="auth-tab active" id="tab-login" onclick="switchTab('login')">Masuk</button>
       <button class="auth-tab" id="tab-register" onclick="switchTab('register')">Daftar</button>
     </div>
-    
     <div id="auth-err" style="color:var(--red2);font-size:12px;margin-bottom:12px;display:none;"></div>
     
-    <!-- SECTION EMAIL & GOOGLE -->
-    <div id="auth-main-section">
-      <div class="form-row"><input type="email" id="auth-email" class="f-input-dark" placeholder="Email"></div>
-      <div class="form-row"><input type="password" id="auth-pass" class="f-input-dark" placeholder="Sandi" onkeydown="if(event.key==='Enter')doAuth()"></div>
-      <div class="form-row" id="field-confirm" style="display:none"><input type="password" id="auth-pass2" class="f-input-dark" placeholder="Ulangi Sandi"></div>
-      
-      <button class="auth-btn" id="auth-submit-btn" onclick="doAuth()">MASUK</button>
-      
-      <button class="auth-btn btn-google" id="btn-google" onclick="doGoogleAuth()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>
-        MASUK DENGAN GOOGLE
-      </button>
+    <div class="form-row"><input type="email" id="auth-email" class="f-input-dark" placeholder="Email"></div>
+    <div class="form-row"><input type="password" id="auth-pass" class="f-input-dark" placeholder="Sandi" onkeydown="if(event.key==='Enter')doAuth()"></div>
+    <div class="form-row" id="field-confirm" style="display:none"><input type="password" id="auth-pass2" class="f-input-dark" placeholder="Ulangi Sandi"></div>
+    
+    <button class="auth-btn" id="auth-submit-btn" onclick="doAuth()">MASUK</button>
+    
+    <button class="auth-btn btn-google" id="btn-google" onclick="doGoogleAuth()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>
+      MASUK DENGAN GOOGLE
+    </button>
 
-      <button class="auth-btn" style="background:var(--bg3); color:var(--text); margin-top:12px; border:1px solid var(--border);" onclick="window.showPhoneAuth()">📱 MASUK PAKAI NOMOR HP</button>
-
-      <button style="background:transparent; border:none; color:var(--text3); font-size:10px; margin-top:16px; cursor:pointer; font-weight:700; text-transform:uppercase; text-decoration:underline; width:100%;" onclick="doResetPassword()" id="btn-forgot">Lupa Sandi?</button>
-      <div style="font-size: 10px; color: var(--gold); margin-top: 6px; text-align: center;">Cek folder SPAM jika email reset tidak masuk</div>
-    </div>
-
-    <!-- SECTION PHONE NUMBER -->
-    <div id="auth-phone-section" style="display:none;">
-      <div class="form-row">
-        <input type="tel" id="auth-phone" class="f-input-dark" placeholder="Cth: +6281234567890 (Wajib +62)">
-      </div>
-      <button class="auth-btn" id="btn-send-otp" onclick="window.sendOTP()">KIRIM KODE OTP</button>
-
-      <div id="otp-section" style="display:none; margin-top: 16px;">
-        <div class="form-row">
-          <input type="text" id="auth-otp" class="f-input-dark" placeholder="Kode OTP 6 Digit" maxlength="6" style="text-align: center; letter-spacing: 10px; font-size: 18px;" inputmode="numeric">
-        </div>
-        <button class="auth-btn" id="btn-verify-otp" onclick="window.verifyOTP()" style="background:var(--green2); color:#000;">VERIFIKASI & MASUK</button>
-      </div>
-
-      <button style="background:transparent; border:none; color:var(--text3); font-size:10px; margin-top:16px; cursor:pointer; font-weight:700; text-transform:uppercase; text-decoration:underline; width:100%;" onclick="window.hidePhoneAuth()">⬅ KEMBALI KE EMAIL</button>
-    </div>
-
+    <button style="background:transparent; border:none; color:var(--text3); font-size:10px; margin-top:16px; cursor:pointer; font-weight:700; text-transform:uppercase; text-decoration:underline; width:100%;" onclick="doResetPassword()" id="btn-forgot">Lupa Sandi?</button>
+    <div style="font-size: 10px; color: var(--gold); margin-top: 6px; text-align: center;">Cek folder SPAM jika email reset tidak masuk</div>
   </div>
 </div>
 
@@ -1077,7 +1051,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { 
   getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, 
   signOut, onAuthStateChanged, sendPasswordResetEmail, 
-  GoogleAuthProvider, signInWithPopup, RecaptchaVerifier, signInWithPhoneNumber
+  GoogleAuthProvider, signInWithPopup 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { 
   initializeFirestore, persistentLocalCache, collection, doc, 
@@ -1435,73 +1409,6 @@ function showErr(msg) { const el = document.getElementById('auth-err'); el.textC
 function hideErr() { document.getElementById('auth-err').style.display = 'none'; }
 function setLoading(on) { document.getElementById('auth-submit-btn').disabled = on; document.getElementById('auth-submit-btn').textContent = on ? 'Memproses...' : (authMode === 'login' ? 'MASUK' : 'DAFTAR'); }
 function setSyncStatus(ok) { document.getElementById('sync-dot').style.background = ok ? 'var(--green2)' : 'var(--red2)'; document.getElementById('sync-label').textContent = ok ? 'TERSINKRON' : 'OFFLINE'; document.getElementById('sync-dot').style.boxShadow = ok ? '0 0 8px var(--green2)' : 'none'; }
-
-// FIREBASE PHONE AUTH FUNGSI TAMBAHAN
-window.showPhoneAuth = function() {
-  document.getElementById('auth-main-section').style.display = 'none';
-  document.getElementById('auth-phone-section').style.display = 'block';
-  document.querySelector('.auth-tabs').style.display = 'none';
-  hideErr();
-};
-
-window.hidePhoneAuth = function() {
-  document.getElementById('auth-phone-section').style.display = 'none';
-  document.getElementById('auth-main-section').style.display = 'block';
-  document.querySelector('.auth-tabs').style.display = 'flex';
-  hideErr();
-  document.getElementById('auth-err').style.color = 'var(--red2)'; 
-};
-
-window.sendOTP = async function() {
-  const phone = document.getElementById('auth-phone').value.trim();
-  hideErr();
-  document.getElementById('auth-err').style.color = 'var(--red2)';
-  if(!phone.startsWith('+')) return showErr('Pastikan pakai kode negara ya, misal: +62812...');
-
-  const btnSend = document.getElementById('btn-send-otp');
-  btnSend.textContent = 'MENGIRIM...';
-  btnSend.disabled = true;
-
-  if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'btn-send-otp', {
-          'size': 'invisible'
-      });
-  }
-
-  try {
-      window.confirmationResult = await signInWithPhoneNumber(auth, phone, window.recaptchaVerifier);
-      btnSend.style.display = 'none';
-      document.getElementById('otp-section').style.display = 'block';
-      document.getElementById('auth-err').style.color = 'var(--green2)';
-      showErr('Kode OTP telah dikirim via SMS!');
-  } catch(e) {
-      showErr('Gagal kirim: ' + e.message);
-      if(window.recaptchaVerifier) {
-          window.recaptchaVerifier.render().then(w => grecaptcha.reset(w));
-      }
-  }
-  btnSend.textContent = 'KIRIM KODE OTP';
-  btnSend.disabled = false;
-};
-
-window.verifyOTP = async function() {
-  const code = document.getElementById('auth-otp').value.trim();
-  if(code.length !== 6) return showErr('OTP harus 6 angka, bro.');
-
-  const btnVerify = document.getElementById('btn-verify-otp');
-  btnVerify.textContent = 'MEMVERIFIKASI...';
-  btnVerify.disabled = true;
-
-  try {
-      await window.confirmationResult.confirm(code);
-      // Firebase otomatis memicu onAuthStateChanged di bawah
-  } catch(e) {
-      document.getElementById('auth-err').style.color = 'var(--red2)';
-      showErr('Kode OTP Salah atau sudah basi.');
-      btnVerify.textContent = 'VERIFIKASI & MASUK';
-      btnVerify.disabled = false;
-  }
-};
 
 window.switchTab = function(mode) { authMode = mode; document.getElementById('tab-login').classList.toggle('active', mode === 'login'); document.getElementById('tab-register').classList.toggle('active', mode === 'register'); document.getElementById('field-confirm').style.display = mode === 'register' ? 'block' : 'none'; document.getElementById('auth-submit-btn').textContent = mode === 'login' ? 'MASUK' : 'DAFTAR'; hideErr(); };
 window.doGoogleAuth = async function() { const provider = new GoogleAuthProvider(); hideErr(); setLoading(true); try { await signInWithPopup(auth, provider); } catch(e) { showErr(e.message); setLoading(false); } };
