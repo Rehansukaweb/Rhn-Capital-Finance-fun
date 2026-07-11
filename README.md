@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, shrink-to-fit=no">
 <title>Arus Keuangan | RHN CAPITAL</title>
 
+<!-- Link Manifest Dihapus Sesuai Permintaan -->
 <meta name="theme-color" content="#050505">
 <link rel="apple-touch-icon" href="RHN LOGO.jpg">
 
@@ -407,119 +408,75 @@ select.f-input-dark option { background: var(--bg2); color: var(--text); font-we
 body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, body.hide-usd .usd-status-pill { display: none !important; }
 
 /* ==========================================================================
-   🌟 SPLASH SCREEN V6
+   🌟 SPLASH SCREEN V8 (MINIMALIST, ELEGAN, BEDA TOTAL)
    ========================================================================== */
 #splash-screen {
   position: fixed; inset: 0; background: #050505; z-index: 999999;
-  display: flex; align-items: center; justify-content: center; overflow: hidden;
-}
-
-.splash-bg-grid {
-  position: absolute; inset: 0;
-  background-size: 40px 40px;
-  background-image: linear-gradient(to right, rgba(251, 191, 36, 0.03) 1px, transparent 1px),
-                    linear-gradient(to bottom, rgba(251, 191, 36, 0.03) 1px, transparent 1px);
-  animation: gridMove 10s linear infinite;
-}
-@keyframes gridMove {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(40px); }
+  display: flex; align-items: center; justify-content: center;
 }
 
 #splash-screen.splash-exit {
-  animation: exitSplash 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-@keyframes exitSplash {
-  0% { opacity: 1; transform: scale(1); filter: blur(0); }
-  100% { opacity: 0; transform: scale(1.05); filter: blur(10px); visibility: hidden; }
+  animation: splashSlideUpOut 0.6s cubic-bezier(0.8, 0, 0.2, 1) forwards;
 }
 
-.splash-glass-panel {
-  position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 40px 60px; background: rgba(18, 18, 21, 0.6);
-  border: 1px solid rgba(251, 191, 36, 0.1); border-radius: 32px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(12px); text-align: center;
-  transform: translateY(20px); opacity: 0;
-  animation: panelUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.2s;
-}
-@keyframes panelUp {
-  to { transform: translateY(0); opacity: 1; }
+@keyframes splashSlideUpOut {
+  to { transform: translateY(-100%); opacity: 0; visibility: hidden; }
 }
 
-.splash-logo-container { position: relative; margin-bottom: 24px; }
-.splash-img-new {
-  width: 80px; height: 80px; border-radius: 20px;
-  border: 2px solid rgba(251, 191, 36, 0.8); padding: 4px;
-  opacity: 0; transform: scale(0.8);
-  animation: logoFlipSimple 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.5s;
-}
-@keyframes logoFlipSimple {
-  to { opacity: 1; transform: scale(1); }
+.splash-content {
+  display: flex; flex-direction: column; align-items: center;
 }
 
-.splash-glow {
-  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  width: 100px; height: 100px; background: rgba(251, 191, 36, 0.4);
-  border-radius: 50%; filter: blur(20px); opacity: 0; z-index: -1;
-  animation: pulseGlowNew 2s infinite alternate 1s;
-}
-@keyframes pulseGlowNew {
-  from { opacity: 0.3; transform: translate(-50%, -50%) scale(0.8); }
-  to { opacity: 0.8; transform: translate(-50%, -50%) scale(1.2); }
+.splash-logo-minimal {
+  width: 90px; height: 90px; border-radius: 24px;
+  border: 2px solid var(--gold); padding: 4px;
+  opacity: 0; transform: translateY(20px);
+  animation: fadeUpItem 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.2s;
 }
 
-.splash-text-mask { display: flex; justify-content: center; width: 100%; padding-bottom: 4px; margin-bottom: 8px; }
-.splash-title-new {
-  font-size: 32px; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;
-  letter-spacing: 4px; text-align: center;
-  background: linear-gradient(90deg, #fff 0%, var(--gold) 50%, #fff 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  opacity: 0; transform: scale(0.9);
-  animation: titleFadeScale 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.8s;
-}
-@keyframes titleFadeScale { to { opacity: 1; transform: scale(1); } }
-
-.splash-subtitle-new {
-  font-size: 12px; font-weight: 700; color: var(--gold); letter-spacing: 6px;
-  opacity: 0; text-transform: uppercase; text-align: center; width: 100%;
-  animation: fadeSub 0.8s ease forwards 1.2s;
-}
-@keyframes fadeSub { to { opacity: 1; } }
-
-.splash-loader {
-  width: 100%; height: 3px; background: rgba(255,255,255,0.1);
-  border-radius: 4px; margin-top: 30px; overflow: hidden; position: relative;
-}
-.splash-loader-bar {
-  position: absolute; top: 0; left: 0; height: 100%; background: var(--gold);
-  width: 0%; border-radius: 4px;
-  animation: loadBar 2s cubic-bezier(0.7, 0, 0.3, 1) forwards 0.5s;
-}
-@keyframes loadBar {
-  0% { width: 0%; }
-  50% { width: 70%; }
-  100% { width: 100%; }
+.splash-text-group {
+  margin-top: 24px; text-align: center;
+  opacity: 0; transform: translateY(20px);
+  animation: fadeUpItem 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.4s;
 }
 
+.splash-title-minimal {
+  font-size: 36px; font-weight: 800; color: #fff; font-family: 'Outfit', sans-serif;
+  letter-spacing: 6px; margin-bottom: 8px;
+}
+
+.splash-subtitle-minimal {
+  font-size: 14px; font-weight: 700; color: var(--gold); letter-spacing: 8px;
+  text-transform: uppercase;
+}
+
+.splash-line-loader {
+  width: 0%; height: 2px; background: var(--gold);
+  margin-top: 32px; border-radius: 2px;
+  animation: expandLine 2s cubic-bezier(0.7, 0, 0.3, 1) forwards 0.8s;
+}
+
+@keyframes fadeUpItem {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes expandLine {
+  0% { width: 0%; opacity: 0; }
+  10% { opacity: 1; }
+  100% { width: 150px; opacity: 0; }
+}
 </style>
 </head>
 <body>
 
 <div id="splash-screen">
-  <div class="splash-bg-grid"></div>
-  <div class="splash-glass-panel">
-    <div class="splash-logo-container">
-      <img src="RHN LOGO.jpg" alt="RHN Capital Logo" class="splash-img-new">
-      <div class="splash-glow"></div>
+  <div class="splash-content">
+    <img src="RHN LOGO.jpg" alt="RHN Capital Logo" class="splash-logo-minimal">
+    <div class="splash-text-group">
+      <div class="splash-title-minimal">RHN CAPITAL</div>
+      <div class="splash-subtitle-minimal">ARUS KEUANGAN</div>
     </div>
-    <div class="splash-text-mask">
-      <div class="splash-title-new">RHN CAPITAL</div>
-    </div>
-    <div class="splash-subtitle-new">ARUS KEUANGAN</div>
-    <div class="splash-loader">
-      <div class="splash-loader-bar"></div>
-    </div>
+    <div class="splash-line-loader"></div>
   </div>
 </div>
 
@@ -564,16 +521,6 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
        <input type="password" id="app-pin" class="f-input-dark" style="text-align:center; letter-spacing: 12px; font-size: 24px; padding: 12px;" inputmode="numeric" maxlength="6" placeholder="••••••">
     </div>
     <button class="auth-btn" id="pin-submit-btn" onclick="verifyPin()" style="display:none;">BUKA APLIKASI</button>
-    
-    <button class="auth-btn" id="bio-submit-btn" onclick="verifyBiometric()" style="display:flex; align-items:center; justify-content:center; gap:8px; background:var(--bg3); color:var(--gold); border: 1px solid var(--gold); margin-top: 12px; font-weight:800;">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2a10 10 0 0 0-10 10v2a10 10 0 0 0 10 10h0a10 10 0 0 0 10-10v-2a10 10 0 0 0-10-10Z"></path>
-            <path d="M9 13.5v-3a3 3 0 0 1 6 0v3"></path>
-            <path d="M12 17.5v-7"></path>
-            <path d="M15 13.5v-3"></path>
-        </svg>
-        SIDIK JARI / FACE ID
-    </button>
     
     <div style="display: flex; justify-content: space-between; gap: 16px; margin-top: 24px;">
       <button style="background:transparent; border:none; color:var(--text3); font-size:10px; cursor:pointer; font-weight:700; text-transform:uppercase; text-decoration:underline;" onclick="resetAccount()">Ganti Akun</button>
@@ -711,7 +658,7 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
 
       <div class="form-row" id="row-recurring">
         <label class="form-label">JADIKAN TRANSAKSI RUTIN?</label>
-        <select id="f-recurring" class="f-input-dark" onchange="document.getElementById('row-recurring-time').style.display = this.value ? 'block' : 'none';">
+        <select id="f-recurring" class="f-input-dark">
             <option value="">Tidak / Sekali Saja</option>
             <option value="daily">Rutin Tiap Hari</option>
             <option value="weekly">Rutin Tiap Minggu</option>
@@ -719,14 +666,9 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
         </select>
       </div>
       
-      <div class="form-row" id="row-recurring-time" style="display:none;">
-        <label class="form-label">JAM TRANSAKSI RUTIN DIEKSEKUSI</label>
-        <input type="time" id="f-recurring-time" class="f-input-dark" value="08:00">
-      </div>
-      
       <div class="form-row">
         <label class="form-label" style="display:flex; justify-content:space-between; align-items:center;">
-          <span>WAKTU DIBUAT (PERTAMA KALI)</span>
+          <span>WAKTU</span>
           <button type="button" onclick="setRealLocalTime()" style="background:transparent; border:none; color:var(--gold); font-size:10px; font-weight:800; font-family:'Outfit', sans-serif; cursor:pointer;">SEKARANG ⏱</button>
         </label>
         <input type="datetime-local" id="f-date" class="f-input-dark">
@@ -821,6 +763,7 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
       <button class="export-btn" onclick="exportCSV()">UNDUH CSV 📥</button>
       <button class="export-btn" onclick="window.promptTransferAll()" style="background:var(--blue); color:#fff; margin-left:8px;">TRANSFER SEMUA 🚀</button>
       
+      <!-- BATCH DELETE TOGGLES -->
       <button class="export-btn" id="btn-batch-del" onclick="execBatchDelete()" style="display:none; background:var(--red2); color:#fff; margin-left:8px;">🗑️ HAPUS TERPILIH</button>
       <button class="export-btn" onclick="toggleBatchMode()" style="background:var(--bg3); color:var(--text); margin-left:8px;">PILIH BANYAK ☑</button>
     </div>
@@ -1153,70 +1096,6 @@ let appPrefs = { type: 'income', category: '', wallet: 'Kas Tunai' };
 let extraPrefs = { 
     ext_autolock: 'off', ext_warnbalance: 'off', ext_shortnum: 'off', ext_budget: 'off', 
     ext_hidezero: 'off', ext_walletpct: 'off', ext_debtbadge: 'off', ext_antiintip: 'off'
-};
-
-// ==============================================================
-// LOGIKA BIOMETRIK (SIDIK JARI / FACE ID)
-// ==============================================================
-window.verifyBiometric = async function() {
-    if (window.pinMode === 'setup') {
-        return Swal.fire({
-            icon: 'info', 
-            title: 'Buat PIN Dulu', 
-            text: 'Lu harus bikin PIN 6 digit dulu sebelum bisa pakai sidik jari, bro!', 
-            background:'var(--card)', color:'var(--text)'
-        });
-    }
-    
-    // Cek jika dibuild jadi APK menggunakan native wrapper bridge (misal: Median.co / AppMySite)
-    if (typeof median !== 'undefined' && median.biometric) {
-        median.biometric.prompt({
-            message: 'Pindai sidik jari Anda untuk mengakses RHN Capital',
-            fallbackMessage: 'Gunakan PIN',
-            callback: function(data) {
-                if (data && data.success) {
-                    unlockApp();
-                } else {
-                    const errEl = document.getElementById('pin-err');
-                    errEl.textContent = 'Sidik jari batal / tidak cocok.';
-                    errEl.style.display = 'block';
-                }
-            }
-        });
-        return;
-    }
-
-    // Fallback WebAuthn (Browser Lokal API)
-    if (window.PublicKeyCredential) {
-        try {
-            const challenge = new Uint8Array(32); 
-            window.crypto.getRandomValues(challenge);
-            
-            const req = await navigator.credentials.get({
-                publicKey: {
-                    challenge: challenge,
-                    rpId: window.location.hostname,
-                    userVerification: "required"
-                }
-            });
-            
-            if (req) {
-                unlockApp();
-            }
-        } catch (err) {
-            console.log("WebAuthn Error:", err);
-            const errEl = document.getElementById('pin-err');
-            errEl.textContent = 'Gagal membaca biometrik. Gunakan PIN.';
-            errEl.style.display = 'block';
-        }
-    } else {
-        Swal.fire({
-            icon: 'error', 
-            title: 'Tidak Support', 
-            text: 'Browser/HP ini belum mendukung sensor Web Biometrik.', 
-            background:'var(--card)', color:'var(--text)'
-        });
-    }
 };
 
 // ==============================================================
@@ -1602,22 +1481,16 @@ onAuthStateChanged(auth, async user => {
         }
     } catch(err) { console.error("Gagal sinkron data pengaturan", err); }
 
-    // --- PROSES TRANSAKSI RUTIN (RECURRING) DENGAN JAM ---
+    // --- PROSES TRANSAKSI RUTIN (RECURRING) ---
     try {
         const recSnap = await getDocs(collection(db, 'users', user.uid, 'recurring_txs'));
-        const nowFull = new Date();
-        nowFull.setMinutes(nowFull.getMinutes() - nowFull.getTimezoneOffset());
-        const currentISO = nowFull.toISOString().slice(0,16); // format: YYYY-MM-DDTHH:mm
-        
+        const todayStr = nowISO().slice(0,10);
         recSnap.forEach(async (d) => {
             let rData = d.data();
-            let runT = rData.runTime || '08:00'; // Default jika waktu tidak diset sebelumnya
-            let targetDateTime = rData.nextRun + 'T' + runT;
-
-            if (currentISO >= targetDateTime) {
-                // Eksekusi penambahan transaksi menggunakan targetDateTime
+            if (rData.nextRun <= todayStr) {
+                // Eksekusi penambahan transaksi
                 await addDoc(collection(db, 'users', user.uid, 'transactions'), {
-                   type: rData.type, amount: rData.amount, category: rData.category, wallet: rData.wallet, walletTo: rData.walletTo, note: rData.note + ' (Auto-Rutin)', date: targetDateTime, ownerEmail: user.email, createdAt: serverTimestamp(), isDeleted: false
+                   type: rData.type, amount: rData.amount, category: rData.category, wallet: rData.wallet, walletTo: rData.walletTo, note: rData.note + ' (Auto-Rutin)', date: new Date().toISOString(), ownerEmail: user.email, createdAt: serverTimestamp(), isDeleted: false
                 });
                 // Update Jadwal Berikutnya
                 let nextD = new Date();
@@ -1843,15 +1716,13 @@ window.addTx = async function() {
           await addDoc(collection(db, 'users', currentUser.uid, 'transactions'), payload); 
           
           if (recVal) {
-             let recTime = document.getElementById('f-recurring-time') ? document.getElementById('f-recurring-time').value : '08:00';
-             if(!recTime) recTime = '08:00';
              let nextD = new Date();
              if(recVal==='daily') nextD.setDate(nextD.getDate()+1);
              if(recVal==='weekly') nextD.setDate(nextD.getDate()+7);
              if(recVal==='monthly') nextD.setMonth(nextD.getMonth()+1);
              
              await addDoc(collection(db, 'users', currentUser.uid, 'recurring_txs'), {
-                 type: payload.type, amount: payload.amount, category: payload.category, wallet: payload.wallet, walletTo: payload.walletTo || null, note: payload.note, interval: recVal, nextRun: nextD.toISOString().slice(0,10), runTime: recTime
+                 type: payload.type, amount: payload.amount, category: payload.category, wallet: payload.wallet, walletTo: payload.walletTo || null, note: payload.note, interval: recVal, nextRun: nextD.toISOString().slice(0,10)
              });
           }
       } 
