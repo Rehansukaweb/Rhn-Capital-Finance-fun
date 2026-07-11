@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, shrink-to-fit=no">
 <title>Arus Keuangan | RHN CAPITAL</title>
 
-<!-- Link Manifest Dihapus Sesuai Permintaan -->
 <meta name="theme-color" content="#050505">
 <link rel="apple-touch-icon" href="RHN LOGO.jpg">
 
@@ -566,6 +565,16 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
     </div>
     <button class="auth-btn" id="pin-submit-btn" onclick="verifyPin()" style="display:none;">BUKA APLIKASI</button>
     
+    <button class="auth-btn" id="bio-submit-btn" onclick="verifyBiometric()" style="display:flex; align-items:center; justify-content:center; gap:8px; background:var(--bg3); color:var(--gold); border: 1px solid var(--gold); margin-top: 12px; font-weight:800;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 0 0-10 10v2a10 10 0 0 0 10 10h0a10 10 0 0 0 10-10v-2a10 10 0 0 0-10-10Z"></path>
+            <path d="M9 13.5v-3a3 3 0 0 1 6 0v3"></path>
+            <path d="M12 17.5v-7"></path>
+            <path d="M15 13.5v-3"></path>
+        </svg>
+        SIDIK JARI / FACE ID
+    </button>
+    
     <div style="display: flex; justify-content: space-between; gap: 16px; margin-top: 24px;">
       <button style="background:transparent; border:none; color:var(--text3); font-size:10px; cursor:pointer; font-weight:700; text-transform:uppercase; text-decoration:underline;" onclick="resetAccount()">Ganti Akun</button>
       <button style="background:transparent; border:none; color:var(--text3); font-size:10px; cursor:pointer; font-weight:700; text-transform:uppercase; text-decoration:underline;" onclick="resetPinFromLogin()">Reset PIN</button>
@@ -702,7 +711,7 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
 
       <div class="form-row" id="row-recurring">
         <label class="form-label">JADIKAN TRANSAKSI RUTIN?</label>
-        <select id="f-recurring" class="f-input-dark">
+        <select id="f-recurring" class="f-input-dark" onchange="document.getElementById('row-recurring-time').style.display = this.value ? 'block' : 'none';">
             <option value="">Tidak / Sekali Saja</option>
             <option value="daily">Rutin Tiap Hari</option>
             <option value="weekly">Rutin Tiap Minggu</option>
@@ -710,9 +719,14 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
         </select>
       </div>
       
+      <div class="form-row" id="row-recurring-time" style="display:none;">
+        <label class="form-label">JAM TRANSAKSI RUTIN DIEKSEKUSI</label>
+        <input type="time" id="f-recurring-time" class="f-input-dark" value="08:00">
+      </div>
+      
       <div class="form-row">
         <label class="form-label" style="display:flex; justify-content:space-between; align-items:center;">
-          <span>WAKTU</span>
+          <span>WAKTU DIBUAT (PERTAMA KALI)</span>
           <button type="button" onclick="setRealLocalTime()" style="background:transparent; border:none; color:var(--gold); font-size:10px; font-weight:800; font-family:'Outfit', sans-serif; cursor:pointer;">SEKARANG ⏱</button>
         </label>
         <input type="datetime-local" id="f-date" class="f-input-dark">
@@ -807,7 +821,6 @@ body.hide-usd .usd-pill, body.hide-usd .ri-usd, body.hide-usd .usd-wallet-val, b
       <button class="export-btn" onclick="exportCSV()">UNDUH CSV 📥</button>
       <button class="export-btn" onclick="window.promptTransferAll()" style="background:var(--blue); color:#fff; margin-left:8px;">TRANSFER SEMUA 🚀</button>
       
-      <!-- BATCH DELETE TOGGLES -->
       <button class="export-btn" id="btn-batch-del" onclick="execBatchDelete()" style="display:none; background:var(--red2); color:#fff; margin-left:8px;">🗑️ HAPUS TERPILIH</button>
       <button class="export-btn" onclick="toggleBatchMode()" style="background:var(--bg3); color:var(--text); margin-left:8px;">PILIH BANYAK ☑</button>
     </div>
@@ -1140,6 +1153,70 @@ let appPrefs = { type: 'income', category: '', wallet: 'Kas Tunai' };
 let extraPrefs = { 
     ext_autolock: 'off', ext_warnbalance: 'off', ext_shortnum: 'off', ext_budget: 'off', 
     ext_hidezero: 'off', ext_walletpct: 'off', ext_debtbadge: 'off', ext_antiintip: 'off'
+};
+
+// ==============================================================
+// LOGIKA BIOMETRIK (SIDIK JARI / FACE ID)
+// ==============================================================
+window.verifyBiometric = async function() {
+    if (window.pinMode === 'setup') {
+        return Swal.fire({
+            icon: 'info', 
+            title: 'Buat PIN Dulu', 
+            text: 'Lu harus bikin PIN 6 digit dulu sebelum bisa pakai sidik jari, bro!', 
+            background:'var(--card)', color:'var(--text)'
+        });
+    }
+    
+    // Cek jika dibuild jadi APK menggunakan native wrapper bridge (misal: Median.co / AppMySite)
+    if (typeof median !== 'undefined' && median.biometric) {
+        median.biometric.prompt({
+            message: 'Pindai sidik jari Anda untuk mengakses RHN Capital',
+            fallbackMessage: 'Gunakan PIN',
+            callback: function(data) {
+                if (data && data.success) {
+                    unlockApp();
+                } else {
+                    const errEl = document.getElementById('pin-err');
+                    errEl.textContent = 'Sidik jari batal / tidak cocok.';
+                    errEl.style.display = 'block';
+                }
+            }
+        });
+        return;
+    }
+
+    // Fallback WebAuthn (Browser Lokal API)
+    if (window.PublicKeyCredential) {
+        try {
+            const challenge = new Uint8Array(32); 
+            window.crypto.getRandomValues(challenge);
+            
+            const req = await navigator.credentials.get({
+                publicKey: {
+                    challenge: challenge,
+                    rpId: window.location.hostname,
+                    userVerification: "required"
+                }
+            });
+            
+            if (req) {
+                unlockApp();
+            }
+        } catch (err) {
+            console.log("WebAuthn Error:", err);
+            const errEl = document.getElementById('pin-err');
+            errEl.textContent = 'Gagal membaca biometrik. Gunakan PIN.';
+            errEl.style.display = 'block';
+        }
+    } else {
+        Swal.fire({
+            icon: 'error', 
+            title: 'Tidak Support', 
+            text: 'Browser/HP ini belum mendukung sensor Web Biometrik.', 
+            background:'var(--card)', color:'var(--text)'
+        });
+    }
 };
 
 // ==============================================================
@@ -1525,16 +1602,22 @@ onAuthStateChanged(auth, async user => {
         }
     } catch(err) { console.error("Gagal sinkron data pengaturan", err); }
 
-    // --- PROSES TRANSAKSI RUTIN (RECURRING) ---
+    // --- PROSES TRANSAKSI RUTIN (RECURRING) DENGAN JAM ---
     try {
         const recSnap = await getDocs(collection(db, 'users', user.uid, 'recurring_txs'));
-        const todayStr = nowISO().slice(0,10);
+        const nowFull = new Date();
+        nowFull.setMinutes(nowFull.getMinutes() - nowFull.getTimezoneOffset());
+        const currentISO = nowFull.toISOString().slice(0,16); // format: YYYY-MM-DDTHH:mm
+        
         recSnap.forEach(async (d) => {
             let rData = d.data();
-            if (rData.nextRun <= todayStr) {
-                // Eksekusi penambahan transaksi
+            let runT = rData.runTime || '08:00'; // Default jika waktu tidak diset sebelumnya
+            let targetDateTime = rData.nextRun + 'T' + runT;
+
+            if (currentISO >= targetDateTime) {
+                // Eksekusi penambahan transaksi menggunakan targetDateTime
                 await addDoc(collection(db, 'users', user.uid, 'transactions'), {
-                   type: rData.type, amount: rData.amount, category: rData.category, wallet: rData.wallet, walletTo: rData.walletTo, note: rData.note + ' (Auto-Rutin)', date: new Date().toISOString(), ownerEmail: user.email, createdAt: serverTimestamp(), isDeleted: false
+                   type: rData.type, amount: rData.amount, category: rData.category, wallet: rData.wallet, walletTo: rData.walletTo, note: rData.note + ' (Auto-Rutin)', date: targetDateTime, ownerEmail: user.email, createdAt: serverTimestamp(), isDeleted: false
                 });
                 // Update Jadwal Berikutnya
                 let nextD = new Date();
@@ -1760,13 +1843,15 @@ window.addTx = async function() {
           await addDoc(collection(db, 'users', currentUser.uid, 'transactions'), payload); 
           
           if (recVal) {
+             let recTime = document.getElementById('f-recurring-time') ? document.getElementById('f-recurring-time').value : '08:00';
+             if(!recTime) recTime = '08:00';
              let nextD = new Date();
              if(recVal==='daily') nextD.setDate(nextD.getDate()+1);
              if(recVal==='weekly') nextD.setDate(nextD.getDate()+7);
              if(recVal==='monthly') nextD.setMonth(nextD.getMonth()+1);
              
              await addDoc(collection(db, 'users', currentUser.uid, 'recurring_txs'), {
-                 type: payload.type, amount: payload.amount, category: payload.category, wallet: payload.wallet, walletTo: payload.walletTo || null, note: payload.note, interval: recVal, nextRun: nextD.toISOString().slice(0,10)
+                 type: payload.type, amount: payload.amount, category: payload.category, wallet: payload.wallet, walletTo: payload.walletTo || null, note: payload.note, interval: recVal, nextRun: nextD.toISOString().slice(0,10), runTime: recTime
              });
           }
       } 
