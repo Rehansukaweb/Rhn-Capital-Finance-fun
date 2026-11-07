@@ -6432,7 +6432,7 @@ function completeOfflineLogin(entry) {
     currentUser = { uid: entry.uid, email: entry.email, displayName: entry.nama || (entry.email || '').split('@')[0] };
     window.__offlineSession = true;
     // Deteksi admin dari email walau lagi offline, biar akun admin tidak dianggap user biasa (mis. kena paywall langganan).
-    window.__isAdmin = ((entry.email || '').trim().toLowerCase() === 'rehantop245@gmail.com');
+    window.__isAdmin = ((entry.email || '').trim().toLowerCase() === 'huyrehan@gmail.com');
     localStorage.setItem('last_uid_rhn', entry.uid);
     const navAdminEl = document.getElementById('nav-admin'); if (navAdminEl) navAdminEl.style.display = window.__isAdmin ? 'inline-block' : 'none';
     const adminSettingsGroupEl = document.getElementById('admin-settings-group'); if (adminSettingsGroupEl) adminSettingsGroupEl.style.display = window.__isAdmin ? 'block' : 'none';
@@ -6943,7 +6943,7 @@ try { if (localStorage.getItem('rhn_admin_cache') === '1' && localStorage.getIte
 onAuthStateChanged(auth, async user => {
   if (user) {
     currentUser = user; localStorage.setItem('last_uid_rhn', user.uid); 
-    window.__isAdmin = (user.email === "rehantop245@gmail.com");
+    window.__isAdmin = (user.email === "huyrehan@gmail.com");
     // FAST: tombol admin langsung tampil/hilang di detik pertama (tanpa nunggu server) + simpan cache
     try {
         const __navAdm = document.getElementById('nav-admin'); if (__navAdm) __navAdm.style.display = window.__isAdmin ? 'inline-block' : 'none';
@@ -7009,7 +7009,7 @@ onAuthStateChanged(auth, async user => {
 
     registerDeviceSession(user);
     
-    const adminEmail = "rehantop245@gmail.com"; 
+    const adminEmail = "huyrehan@gmail.com"; 
     const isAdminUser = (user.email === adminEmail);
     window.__isAdmin = isAdminUser;
     if (isAdminUser) { document.getElementById('nav-admin').style.display = 'inline-block'; } else { document.getElementById('nav-admin').style.display = 'none'; }
